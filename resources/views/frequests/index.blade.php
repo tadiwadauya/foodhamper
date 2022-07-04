@@ -1,4 +1,4 @@
-a@extends('layouts.app')
+@extends('layouts.app')
 
 @section('template_linked_css')
     <link rel="stylesheet" type="text/css" href="{{ asset('dash_resource/css/datatables.bootstrap4.min.css') }}">
@@ -51,10 +51,10 @@ a@extends('layouts.app')
                                 </div>
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
-                                        <table id="basic-btn" class="table table-bordered nowrap">
+                                        <table id="requests-table" class="table table-bordered nowrap">
                                             <thead>
                                                 <tr>
-                                                    <th>ID</th>
+                                                    <td>ID</td>
                                                     <th>Paynumber</th>
                                                     <th>Name</th>
                                                     <th>Department</th>
@@ -69,16 +69,12 @@ a@extends('layouts.app')
                                             </thead>
                                             <tbody>
                                                 @if ($frequests)
-                                                    @php
-                                                        $i = 1;
-                                                    @endphp
-
                                                     @foreach ($frequests as $frequest)
                                                         @php
                                                             $user = \App\Models\User::where('paynumber', $frequest->paynumber)->first();
                                                         @endphp
                                                         <tr>
-                                                            <td>{{ $i }}</td>
+                                                            <td>{{ $frequest->id }}</td>
                                                             <td>{{ $frequest->paynumber }}</td>
                                                             <td>
                                                                 {{ !empty($user->full_name) ? $user->full_name : '' }}
@@ -133,14 +129,11 @@ a@extends('layouts.app')
                                                                 </form>
                                                             </td>
                                                         </tr>
-
-                                                        @php
-                                                            $i++;
-                                                        @endphp
                                                     @endforeach
                                                 @endif
                                             </tbody>
                                         </table>
+                                        <div class="pagination mt-6 p-5">{{ $frequests->links() }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -152,6 +145,7 @@ a@extends('layouts.app')
     </div>
 
 @endsection
+
 
 @section('footer_scripts')
     <script src="{{ asset('dash_resource/js/jquery.datatables.min.js') }}" type="text/javascript"></script>
@@ -167,3 +161,11 @@ a@extends('layouts.app')
     <script src="{{ asset('dash_resource/js/datatables.responsive.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('dash_resource/js/extension-btns-custom.js') }}" type="text/javascript"></script>
 @endsection
+
+<script>
+    $("#requests-table").DataTable({
+        dom: "Bfrtip",
+        buttons: ["copy", "csv", "excel", "pdf", "print"],
+        bPaginate: false
+    });
+</script>
