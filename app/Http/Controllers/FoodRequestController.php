@@ -24,7 +24,7 @@ class FoodRequestController extends Controller
      */
     public function index()
     {
-        $frequests = FoodRequest::latest()->simplePaginate(10);
+        $frequests = FoodRequest::latest()->paginate(10);
 
         return view('frequests.index', compact('frequests'));
     }
@@ -630,7 +630,7 @@ class FoodRequestController extends Controller
 
     public function getCollectedRequests()
     {
-        $frequests = FoodRequest::latest()->where('status', '=', 'collected')->simplePaginate(10);
+        $frequests = FoodRequest::latest()->where('status', '=', 'collected')->paginate(10);
         return view('frequests.collected', compact('frequests'));
     }
 
