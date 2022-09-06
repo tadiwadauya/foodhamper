@@ -13,7 +13,7 @@ a@extends('layouts.app')
                 <div class="page-header-title">
                     <div class="d-inline">
                         <h5>Requested Hampers</h5>
-                        <span class="pcoded-mtext"> Overview of Requested food Hampers</span>
+                        <span class="pcoded-mtext"> Overview Of Requested food Hampers</span>
                     </div>
                 </div>
             </div>
