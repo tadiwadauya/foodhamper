@@ -24,7 +24,7 @@ class MeatCollectionController extends Controller
     public function index()
     {
         $collections = MeatCollection::latest()->get();
-        return view('mcollections.index',compact('collections'));
+        return view('mcollections.index', compact('collections'));
     }
 
     /**
@@ -34,12 +34,12 @@ class MeatCollectionController extends Controller
      */
     public function create()
     {
-        $requests = FoodRequest::where('trash','=',1)
-                                ->where('status','=','approved')
-                                ->whereNull('issued_on')
-                                ->where('type','=','meat')
-                                ->get();
-        return view('mcollections.create',compact('requests'));
+        $requests = FoodRequest::where('trash', '=', 1)
+            ->where('status', '=', 'approved')
+            ->whereNull('issued_on')
+            ->where('type', '=', 'meat')
+            ->get();
+        return view('mcollections.create', compact('requests'));
     }
 
     /**
@@ -50,7 +50,7 @@ class MeatCollectionController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'paynumber' => 'required',
             'jobcard' => 'required',
             'frequest' => 'required|unique:meat_collections,frequest',
@@ -60,16 +60,14 @@ class MeatCollectionController extends Controller
             'pin' => 'required',
         ]);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
-
         } else {
 
             try {
 
                 $frequest = FoodRequest::findOrFail($request->paynumber);
-                $user = User::where('paynumber',$frequest->paynumber)->first();
+                $user = User::where('paynumber', $frequest->paynumber)->first();
 
                 $collect = new MeatCollection();
                 $collect->paynumber = $user->paynumber;
@@ -78,84 +76,72 @@ class MeatCollectionController extends Controller
                 $collect->allocation = $request->input('allocation');
                 $collect->issue_date = $request->input('issue_date');
 
-                if ($request->iscollector == 'self')
-                {
+                if ($request->iscollector == 'self') {
                     $collect->self = 1;
-
                 } else {
                     $id_number = $request->collected_by;
 
-                    if($id_number)
-                    {
-                        $beneficiary = Beneficiary::where('id_number',$id_number)->first();
+                    if ($id_number) {
+                        $beneficiary = Beneficiary::where('id_number', $id_number)->first();
                         $collect->self = 0;
                         $collect->collected_by = $beneficiary->full_name;
                         $collect->id_number = $beneficiary->id_number;
-
                     } else {
 
-                        return redirect()->back()->with("error","Please select employee beneficiary");
+                        return redirect()->back()->with("error", "Please select employee beneficiary");
                     }
                 }
 
-                if (Hash::check($request->pin,$user->pin))
-                {
+                if (Hash::check($request->pin, $user->pin)) {
                     $collect->done_by = Auth::user()->id;
                     $collect->updated_at = now();
                     $collect->status = 1;
 
-                    $jobcard = Jobcard::where('card_number',$request->input('jobcard'))->first();
-                    $job_month = $frequest->paynumber.$jobcard->card_month;
+                    $jobcard = Jobcard::where('card_number', $request->input('jobcard'))->first();
+                    $job_month = $frequest->paynumber . $jobcard->card_month;
 
-                    if ($jobcard->remaining > 0)
-                    {
+                    if ($jobcard->remaining > 0) {
                         $jobcard->updated_at = now();
+                        $jobcard->issued += 1;
+                        // if ($job_month == $frequest->allocation)
+                        // {
+                        //     $jobcard->issued += 1;
 
-                        if ($job_month == $frequest->allocation)
-                        {
-                            $jobcard->issued += 1;
+                        // } else {
 
-                        } else {
-
-                            $jobcard->extras_previous += 1;
-                        }
+                        //     $jobcard->extras_previous += 1;
+                        // }
 
                         $jobcard->remaining -= 1;
                         $jobcard->save();
 
-                        if ($jobcard->save())
-                        {
+                        if ($jobcard->save()) {
                             $collect->save();
 
-                            if ($collect->save())
-                            {
+                            if ($collect->save()) {
                                 $frequest->status = "collected";
                                 $frequest->issued_on = now();
                                 $frequest->save();
 
-                                $allocation = Allocation::where('allocation',$request->allocation)->first();
+                                $allocation = Allocation::where('allocation', $request->allocation)->first();
                                 $allocation->meet_allocation -= 1;
                                 $allocation->status = "collected";
                                 $allocation->save();
 
                                 $user->mcount -= 1;
                                 $user->save();
-
                             }
 
-                            return redirect('mcollections/create')->with('success','Collection has been processed successfully');
+                            return redirect('mcollections/create')->with('success', 'Collection has been processed successfully');
                         }
-
                     } else {
-                        return redirect()->back()->with('error','Selected jobcard has no remaining units');
+                        return redirect()->back()->with('error', 'Selected jobcard has no remaining units');
                     }
-
                 } else {
-                    return redirect()->back()->with('error','Invalid pin supplied.');
+                    return redirect()->back()->with('error', 'Invalid pin supplied.');
                 }
-
             } catch (\Exception $e) {
-                echo "error - ".$e;
+                echo "error - " . $e;
             }
         }
     }
@@ -170,7 +156,7 @@ class MeatCollectionController extends Controller
     {
         $collection = MeatCollection::findOrFail($id);
 
-        return view('mcollections.show',compact('collection'));
+        return view('mcollections.show', compact('collection'));
     }
 
     /**
@@ -210,8 +196,8 @@ class MeatCollectionController extends Controller
     public function getRequestType($id)
     {
         $type = DB::table("food_requests")
-          ->where("id",$id)
-          ->pluck("type");
+            ->where("id", $id)
+            ->pluck("type");
 
         return response()->json($type);
     }

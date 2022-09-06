@@ -61,17 +61,17 @@ class User extends Authenticatable
 
     public function department()
     {
-        return $this->belongsTo(Department::class,'department_id','id');
+        return $this->belongsTo(Department::class, 'department_id', 'id');
     }
 
     public function usertype()
     {
-        return $this->belongsTo(Usertype::class,'usertype_id','id');
+        return $this->belongsTo(Usertype::class, 'usertype_id', 'id');
     }
 
     public function allocations()
     {
-        return $this->hasMany(Allocation::class,'paynumber','paynumber');
+        return $this->hasMany(Allocation::class, 'paynumber', 'paynumber');
     }
 
     public function getFullNameAttribute()
@@ -81,22 +81,26 @@ class User extends Authenticatable
 
     public function frequests()
     {
-        return $this->hasMany(FoodRequest::class,'paynumber','paynumber');
+        return $this->hasMany(FoodRequest::class, 'paynumber', 'paynumber');
+    }
+
+    public function mrequests()
+    {
+        return $this->hasMany(MeatRequest::class, 'paynumber', 'paynumber');
     }
 
     public function food_collections()
     {
-        return $this->hasMany(FoodCollection::class,'paynumber','paynumber');
+        return $this->hasMany(FoodCollection::class, 'paynumber', 'paynumber');
     }
 
     public function meat_collections()
     {
-        return $this->hasMany(MeatCollection::class,'paynumber','paynumber');
+        return $this->hasMany(MeatCollection::class, 'paynumber', 'paynumber');
     }
 
     public function beneficiaries()
     {
-        return $this->belongsToMany(Beneficiary::class,'beneficiary_user','user_id','beneficiary_id');
+        return $this->belongsToMany(Beneficiary::class, 'beneficiary_user', 'user_id', 'beneficiary_id');
     }
-
 }
