@@ -200,187 +200,177 @@ class MeatRequestController extends Controller
     {
         $request = MeatRequest::findOrFail($id);
 
-        if ($request->type == 'extra') {
-            $user = User::where('paynumber', $request->paynumber)->first();
 
-            $jobcard = Jobcard::where('remaining', '>', 0)->where('card_type', '=', 'meat')->first();
+        $user = User::where('paynumber', $request->paynumber)->first();
 
-            if ($jobcard) {
-                $job_month = $request->paynumber . $jobcard->card_month;
+        if ($user->activated == 1) {
+            $request->status = "approved";
+            $request->trash = 1;
+            $request->done_by = Auth::user()->name;
+            $request->approver = Auth::user()->paynumber;
+            $request->updated_at = now();
+            $request->save();
 
-                if ($user->activated == 1) {
-                    $request->status = "approved";
-                    $request->trash = 1;
-                    $request->done_by = Auth::user()->name;
-                    $request->approver = Auth::user()->paynumber;
-                    $request->updated_at = now();
-                    $request->jobcard = $jobcard->card_number;
-                    $request->save();
+            // if ($request->save())
+            // {
+            //     $jobcard->updated_at = now();
+            //     $jobcard->extras_previous += 1;
+            //     $jobcard->remaining -= 1;
+            //     $jobcard->save();
+            // }
 
-                    // if ($request->save())
-                    // {
-                    //     $jobcard->updated_at = now();
-                    //     $jobcard->extras_previous += 1;
-                    //     $jobcard->remaining -= 1;
-                    //     $jobcard->save();
-                    // }
+            return redirect('pending-requests')->with('success', 'Request has been approved successfully');
+        } else {
+            return redirect()->back()->with("error", "Selected user is not active.");
+        }
 
-                    return redirect('pending-requests')->with('success', 'Request has been approved successfully');
+
+        $allocation = Allocation::where('allocation', $request->allocation)->first();
+        $settings = HumberSetting::where('id', 1)->first();
+
+        if ($allocation) {
+            $request_type = $request->type;
+
+            if ($request_type == 'meat') {
+                if ($settings->food_available == 1) {
+                    if ($allocation->food_allocation == 1) {
+                        // check if there is a request approved for the same allocation
+                        $previous = MeatRequest::where('allocation', $request->allocation)
+                            ->where('type', '=', 'meat')
+                            ->where('status', '=', 'approved')
+                            ->where('trash', '=', 1)
+                            ->first();
+
+                        if (!$previous) {
+                            // check if there is a jobcard with non allocated units
+                            $jobcard = Jobcard::where('remaining', '>', 0)->where('card_type', '=', 'meat')->first();
+
+                            if ($jobcard) {
+                                $job_month = $request->paynumber . $jobcard->card_month;
+                                $user_status_activated = $allocation->user->activated;
+                                if ($user_status_activated == 1) {
+                                    $request->status = "approved";
+                                    $request->trash = 1;
+                                    $request->done_by = Auth::user()->name;
+                                    $request->approver = Auth::user()->paynumber;
+                                    $request->updated_at = now();
+                                    $request->jobcard = $jobcard->card_number;
+                                    $request->save();
+
+                                    // $jobcard->updated_at = now();
+
+                                    // if ($job_month == $request->allocation)
+                                    // {
+                                    //     $jobcard->issued += 1;
+
+                                    // } else {
+
+                                    //     $jobcard->extras_previous += 1;
+                                    // }
+                                    // $jobcard->remaining -= 1;
+                                    // $jobcard->save();
+
+                                    return redirect('pending-requests')->with('success', 'Request has been approved successfully');
+                                } else {
+
+                                    return back()->with('error', "Selected User has been De Activated. Please contact admin for user to be activated.");
+                                }
+                                return redirect('pending-requests')->with('success', 'Humber request has been approved successfully');
+                            } else {
+
+                                return back()->with('error', 'There is no jobcard for approving the request. Please contact Admin for more info');
+                            }
+                        } else {
+
+                            if ($request->id == $previous->id) {
+                                return back()->with('warning', 'This request has been approved already. ');
+                            } else {
+
+                                $request->status = "rejected";
+                                $request->forceDelete();
+
+                                return back()->with('warning', 'Requested humber has been approved. Please check on your approved requests.');
+                            }
+                        }
+                    } else {
+                        return redirect()->back()->with('error', 'Meat humber has been collected.');
+                    }
                 } else {
-                    return redirect()->back()->with("error", "Selected user is not active.");
+
+                    return back()->with('error', 'Meat Humbers are currently unavailable');
                 }
             } else {
-                return back()->with("error", "There's no job card for approving the request");
+
+                if ($settings->meat_available == 1) {
+                    if ($allocation->meet_allocation == 1) {
+                        // check if there is a request approved for the same allocation
+                        $previous = MeatRequest::where('allocation', $request->allocation)
+                            ->where('type', '=', 'meat')
+                            ->where('status', '=', 'approved')
+                            ->where('trash', '=', 1)
+                            ->first();
+
+                        if (!$previous) {
+                            // check if there is a jobcard with non allocated units
+                            $jobcard = Jobcard::where('remaining', '>', 0)->where('card_type', '=', 'meat')->first();
+
+                            if ($jobcard) {
+                                $job_month = $request->paynumber . $jobcard->card_month;
+                                $user_status_activated = $allocation->user->activated;
+                                if ($user_status_activated == 1) {
+                                    $request->status = "approved";
+                                    $request->trash = 1;
+                                    $request->done_by = Auth::user()->name;
+                                    $request->approver = Auth::user()->paynumber;
+                                    $request->updated_at = now();
+                                    $request->jobcard = $jobcard->card_number;
+                                    $request->save();
+
+                                    // $jobcard->updated_at = now();
+
+                                    // if ($job_month == $request->allocation)
+                                    // {
+                                    //     $jobcard->issued += 1;
+
+                                    // } else {
+
+                                    //     $jobcard->extras_previous += 1;
+                                    // }
+                                    // $jobcard->remaining -= 1;
+                                    // $jobcard->save();
+
+                                } else {
+
+                                    return back()->with('error', "Selected User has been De Activated. Please contact admin for user to be activated.");
+                                }
+                                return redirect('/pending-requests')->with('success', 'Humber request has been approved successfully');
+                            } else {
+
+                                return back()->with('error', 'There is no jobcard for approving the request. Please create a new job card');
+                            }
+                        } else {
+
+                            if ($request->id == $previous->id) {
+                                return back()->with('warning', 'This request has been approved already. ');
+                            } else {
+
+                                $request->status = "rejected";
+                                $request->forceDelete();
+
+                                return back()->with('warning', 'Requested humber has been approved. Please check on your approved requests.');
+                            }
+                        }
+                    } else {
+                        return redirect()->back()->with('error', 'Meat humber has been collected.');
+                    }
+                } else {
+
+                    return back()->with('error', 'Meat Humbers are currently unavailable');
+                }
             }
         } else {
 
-            $allocation = Allocation::where('allocation', $request->allocation)->first();
-            $settings = HumberSetting::where('id', 1)->first();
-
-            if ($allocation) {
-                $request_type = $request->type;
-
-                if ($request_type == 'meat') {
-                    if ($settings->food_available == 1) {
-                        if ($allocation->food_allocation == 1) {
-                            // check if there is a request approved for the same allocation
-                            $previous = MeatRequest::where('allocation', $request->allocation)
-                                ->where('type', '=', 'meat')
-                                ->where('status', '=', 'approved')
-                                ->where('trash', '=', 1)
-                                ->first();
-
-                            if (!$previous) {
-                                // check if there is a jobcard with non allocated units
-                                $jobcard = Jobcard::where('remaining', '>', 0)->where('card_type', '=', 'meat')->first();
-
-                                if ($jobcard) {
-                                    $job_month = $request->paynumber . $jobcard->card_month;
-                                    $user_status_activated = $allocation->user->activated;
-                                    if ($user_status_activated == 1) {
-                                        $request->status = "approved";
-                                        $request->trash = 1;
-                                        $request->done_by = Auth::user()->name;
-                                        $request->approver = Auth::user()->paynumber;
-                                        $request->updated_at = now();
-                                        $request->jobcard = $jobcard->card_number;
-                                        $request->save();
-
-                                        // $jobcard->updated_at = now();
-
-                                        // if ($job_month == $request->allocation)
-                                        // {
-                                        //     $jobcard->issued += 1;
-
-                                        // } else {
-
-                                        //     $jobcard->extras_previous += 1;
-                                        // }
-                                        // $jobcard->remaining -= 1;
-                                        // $jobcard->save();
-
-                                        return redirect('pending-requests')->with('success', 'Request has been approved successfully');
-                                    } else {
-
-                                        return back()->with('error', "Selected User has been De Activated. Please contact admin for user to be activated.");
-                                    }
-                                    return redirect('pending-requests')->with('success', 'Humber request has been approved successfully');
-                                } else {
-
-                                    return back()->with('error', 'There is no jobcard for approving the request. Please contact Admin for more info');
-                                }
-                            } else {
-
-                                if ($request->id == $previous->id) {
-                                    return back()->with('warning', 'This request has been approved already. ');
-                                } else {
-
-                                    $request->status = "rejected";
-                                    $request->forceDelete();
-
-                                    return back()->with('warning', 'Requested humber has been approved. Please check on your approved requests.');
-                                }
-                            }
-                        } else {
-                            return redirect()->back()->with('error', 'Meat humber has been collected.');
-                        }
-                    } else {
-
-                        return back()->with('error', 'Meat Humbers are currently unavailable');
-                    }
-                } else {
-
-                    if ($settings->meat_available == 1) {
-                        if ($allocation->meet_allocation == 1) {
-                            // check if there is a request approved for the same allocation
-                            $previous = MeatRequest::where('allocation', $request->allocation)
-                                ->where('type', '=', 'meat')
-                                ->where('status', '=', 'approved')
-                                ->where('trash', '=', 1)
-                                ->first();
-
-                            if (!$previous) {
-                                // check if there is a jobcard with non allocated units
-                                $jobcard = Jobcard::where('remaining', '>', 0)->where('card_type', '=', 'meat')->first();
-
-                                if ($jobcard) {
-                                    $job_month = $request->paynumber . $jobcard->card_month;
-                                    $user_status_activated = $allocation->user->activated;
-                                    if ($user_status_activated == 1) {
-                                        $request->status = "approved";
-                                        $request->trash = 1;
-                                        $request->done_by = Auth::user()->name;
-                                        $request->approver = Auth::user()->paynumber;
-                                        $request->updated_at = now();
-                                        $request->jobcard = $jobcard->card_number;
-                                        $request->save();
-
-                                        // $jobcard->updated_at = now();
-
-                                        // if ($job_month == $request->allocation)
-                                        // {
-                                        //     $jobcard->issued += 1;
-
-                                        // } else {
-
-                                        //     $jobcard->extras_previous += 1;
-                                        // }
-                                        // $jobcard->remaining -= 1;
-                                        // $jobcard->save();
-
-                                    } else {
-
-                                        return back()->with('error', "Selected User has been De Activated. Please contact admin for user to be activated.");
-                                    }
-                                    return redirect('/pending-requests')->with('success', 'Humber request has been approved successfully');
-                                } else {
-
-                                    return back()->with('error', 'There is no jobcard for approving the request. Please create a new job card');
-                                }
-                            } else {
-
-                                if ($request->id == $previous->id) {
-                                    return back()->with('warning', 'This request has been approved already. ');
-                                } else {
-
-                                    $request->status = "rejected";
-                                    $request->forceDelete();
-
-                                    return back()->with('warning', 'Requested humber has been approved. Please check on your approved requests.');
-                                }
-                            }
-                        } else {
-                            return redirect()->back()->with('error', 'Meat humber has been collected.');
-                        }
-                    } else {
-
-                        return back()->with('error', 'Meat Humbers are currently unavailable');
-                    }
-                }
-            } else {
-
-                return back()->with('info', 'User has no allocation.');
-            }
+            return back()->with('info', 'User has no allocation.');
         }
     }
 

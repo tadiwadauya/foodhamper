@@ -137,6 +137,7 @@ Route::group(['middleware' => ['auth', 'activated', 'web', 'activity', 'managera
     Route::get('/jobcard-download', 'App\Http\Controllers\JobcardsController@downloadJobcardForm');
 
     Route::get('/available/jobcard', [JobcardsController::class, 'getAvailableJobCard']);
+    Route::get('/available/meat/jobcard', [JobcardsController::class, 'getAvailableMeatJobCard']);
 });
 
 Route::group(['middleware' => ['auth', 'activated', 'web', 'activity']], function () {
@@ -180,7 +181,13 @@ Route::group(['middleware' => ['auth', 'activated', 'web', 'activity']], functio
 
     // meat collection
     Route::resource('mcollections', 'App\Http\Controllers\MeatCollectionController')->middleware('hampercollection');
+    Route::get('get-meat-request/{id}', 'App\Http\Controllers\MeatCollectionController@getMeatRequest');
+    Route::get('getmrequestallocation/{id}', 'App\Http\Controllers\MeatCollectionController@getMeatRequestAllocation');
+    Route::get('getbeneficiary/{id}', 'App\Http\Controllers\MeatCollectionController@getUserBeneficiaries');
     Route::get('/get-request-type/{id}', 'App\Http\Controllers\MeatCollectionController@getRequestType');
+    Route::get('/get-jobcard-request/{id}', 'App\Http\Controllers\FoodCollectionController@getRequestJobcard');
+    Route::get('/get-jobcard-request/{id}', 'App\Http\Controllers\FoodCollectionController@getRequestJobcard');
+    Route::get('/gettype/{id}', 'App\Http\Controllers\MeatCollectionController@getMeatType');
 });
 
 Route::group(['middleware' => ['auth', 'activated', 'web', 'activity', 'manageradmin']], function () {

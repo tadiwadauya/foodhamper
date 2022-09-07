@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Allocation;
 use App\Models\Beneficiary;
-use App\Models\FoodRequest;
+use App\Models\MeatRequest;
 use App\Models\Jobcard;
 use App\Models\MeatCollection;
 use App\Models\User;
@@ -34,11 +34,16 @@ class MeatCollectionController extends Controller
      */
     public function create()
     {
-        $requests = FoodRequest::where('trash', '=', 1)
-            ->where('status', '=', 'approved')
-            ->whereNull('issued_on')
-            ->where('type', '=', 'meat')
+        $requests = MeatRequest::where([
+            ['jobcard', '=', null],
+            ['status', '=', 'approved'],
+            ['issued_on', '=', null]
+        ])
+            ->orWhere([
+                ['status', '=', 'approved']
+            ])
             ->get();
+
         return view('mcollections.create', compact('requests'));
     }
 
@@ -53,7 +58,7 @@ class MeatCollectionController extends Controller
         $validator = Validator::make($request->all(), [
             'paynumber' => 'required',
             'jobcard' => 'required',
-            'frequest' => 'required|unique:meat_collections,frequest',
+            'mrequest' => 'required|unique:meat_collections,mrequest',
             'allocation' => 'required|unique:meat_collections,allocation',
             'issue_date' => 'required',
             'iscollector' => 'required',
@@ -66,13 +71,13 @@ class MeatCollectionController extends Controller
 
             try {
 
-                $frequest = FoodRequest::findOrFail($request->paynumber);
-                $user = User::where('paynumber', $frequest->paynumber)->first();
+                $mrequest = MeatRequest::findOrFail($request->paynumber);
+                $user = User::where('paynumber', $mrequest->paynumber)->first();
 
                 $collect = new MeatCollection();
                 $collect->paynumber = $user->paynumber;
                 $collect->jobcard = $request->input('jobcard');
-                $collect->frequest = $request->input('frequest');
+                $collect->mrequest = $request->input('mrequest');
                 $collect->allocation = $request->input('allocation');
                 $collect->issue_date = $request->input('issue_date');
 
@@ -98,12 +103,12 @@ class MeatCollectionController extends Controller
                     $collect->status = 1;
 
                     $jobcard = Jobcard::where('card_number', $request->input('jobcard'))->first();
-                    $job_month = $frequest->paynumber . $jobcard->card_month;
+                    $job_month = $mrequest->paynumber . $jobcard->card_month;
 
                     if ($jobcard->remaining > 0) {
                         $jobcard->updated_at = now();
                         $jobcard->issued += 1;
-                        // if ($job_month == $frequest->allocation)
+                        // if ($job_month == $mrequest->allocation)
                         // {
                         //     $jobcard->issued += 1;
 
@@ -119,9 +124,9 @@ class MeatCollectionController extends Controller
                             $collect->save();
 
                             if ($collect->save()) {
-                                $frequest->status = "collected";
-                                $frequest->issued_on = now();
-                                $frequest->save();
+                                $mrequest->status = "collected";
+                                $mrequest->issued_on = now();
+                                $mrequest->save();
 
                                 $allocation = Allocation::where('allocation', $request->allocation)->first();
                                 $allocation->meet_allocation -= 1;
@@ -200,5 +205,48 @@ class MeatCollectionController extends Controller
             ->pluck("type");
 
         return response()->json($type);
+    }
+
+    public function getMeatRequest($id)
+    {
+        $data = DB::table("meat_requests")
+            ->where("id", $id)
+            ->pluck("request");
+
+        return response()->json($data);
+    }
+
+    public function getMeatRequestAllocation($id)
+    {
+        $allocation = DB::table("meat_requests")
+            ->where("id", $id)
+            ->pluck("allocation");
+
+        return response()->json($allocation);
+    }
+
+    public function getMeatType($id)
+    {
+        $mrequest = MeatRequest::findOrFail($id);
+
+        $allocation = DB::table('allocations')
+            ->where('allocation', $mrequest->allocation)
+            ->pluck('meet_a', 'meet_b');
+
+        return response()->json($allocation);
+    }
+
+    public function getUserBeneficiaries($id)
+    {
+        $request = MeatRequest::where('id', $id)->first();
+
+        $user = User::where('paynumber', $request->paynumber)->first();
+
+        $beneficiaries = DB::table('beneficiary_user')
+            ->rightJoin('beneficiaries', 'beneficiary_user.beneficiary_id', '=', 'beneficiaries.id')
+            ->where('beneficiary_user.user_id', '=', $user->id)
+            ->pluck('first_name', 'id_number');
+
+        return response()->json($beneficiaries);
     }
 }

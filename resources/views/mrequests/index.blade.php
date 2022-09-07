@@ -115,7 +115,7 @@
                                                             </td>
                                                             <td>{{ $mrequest->type }}</td>
                                                             <td style="white-space: nowrap;width:20%;">
-                                                                <a href="{{ url('approve-request/' . $mrequest->id) }}"
+                                                                <a href="{{ url('approve-meat-request/' . $mrequest->id) }}"
                                                                     data-toggle="tooltip" title="Approve Request"
                                                                     class="d-inline btn btn-sm btn-primary"><i
                                                                         class="fa fa-pencil"></i></a>

@@ -19,7 +19,7 @@ class CreateMeatCollectionsTable extends Migration
             $table->string('jobcard');
             $table->date('issue_date');
             $table->string('allocation')->unique();
-            $table->string('frequest')->unique();
+            $table->string('mrequest')->unique();
             $table->string('done_by');
             $table->boolean('status');
             $table->string('collected_by')->nullable();

@@ -264,8 +264,15 @@ class JobcardsController extends Controller
 
     public function getAvailableJobCard()
     {
-        $card_number = DB::select('Select card_number from jobcards where remaining > 0');
+        $card_number = DB::select('Select card_number from jobcards where remaining > 0 and card_type = "food"');
 
+        return $card_number;
+    }
+
+    public function getAvailableMeatJobCard()
+    {
+        $card_number = DB::select('Select card_number from jobcards where remaining > 0 and card_type = "meat"');
+        // dd($card_number);
         return $card_number;
     }
 }
