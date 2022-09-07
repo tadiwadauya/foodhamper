@@ -196,7 +196,7 @@
                     </ul>
                 </li>
 
-                <div class="pcoded-navigation-label">Allocations</div>
+                <div class="pcoded-navigation-label">Food Allocations</div>
 
                 <li class="pcoded-hasmenu">
                     <a
@@ -238,6 +238,52 @@
                         class="waves-effect waves-dark"
                         >
                         <span class="pcoded-mtext">Deleted Allocations</span>
+                        </a>
+                    </li>
+                    </ul>
+                </li>
+                <div class="pcoded-navigation-label">Meat Allocations</div>
+
+                <li class="pcoded-hasmenu">
+                    <a
+                    href="javascript:void(0)"
+                    class="waves-effect waves-dark"
+                    >
+                    <span class="pcoded-micon"
+                        ><i class="fa fa-calendar"></i></span>
+                    <span class="pcoded-mtext">Meat Allocations</span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                    <li class="">
+                        <a
+                        href="{{ url('meatallocations/create') }}"
+                        class="waves-effect waves-dark"
+                        >
+                        <span class="pcoded-mtext">Add New</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a
+                        href="{{ url('meatallocations') }}"
+                        class="waves-effect waves-dark"
+                        >
+                        <span class="pcoded-mtext">Meat Allocations</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a
+                        href="{{ url('import-meatallocation') }}"
+                        class="waves-effect waves-dark"
+                        >
+                        <span class="pcoded-mtext">Import Meat Allocation</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a
+                        href="{{ url('deleted-meatallocations') }}"
+                        class="waves-effect waves-dark"
+                        >
+                        <span class="pcoded-mtext">Deleted Meat Allocations</span>
                         </a>
                     </li>
                     </ul>

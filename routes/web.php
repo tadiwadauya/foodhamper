@@ -132,6 +132,20 @@ Route::group(['middleware' => ['auth', 'activated','web', 'activity','manageradm
 
 Route::group(['middleware' => ['auth', 'activated','web', 'activity','manageradmin']], function () {
 
+    // allocations
+    Route::resource('meatallocations', 'App\Http\Controllers\MeatAllocationsController');
+    Route::get('import-meatallocation','App\Http\Controllers\MeatAllocationsController@allocationImportForm');
+    Route::post('meatallocation-import-send','App\Http\Controllers\MeatAllocationsController@allocationImportSend');
+    Route::get('all-meatalloctions','App\Http\Controllers\MeatAllocationsController@allAllocations');
+    Route::get('/department-users/{department}','App\Http\Controllers\MeatAllocationsController@getDepartmentalUsers');
+    Route::resource('deleted-meatallocations', 'App\Http\Controllers\SoftDeleteAllocationsController');
+    Route::get('/get-meatallocation/{paynumber}','App\Http\Controllers\MeatAllocationsController@getAllocation');
+    Route::get('/meatallocation-download','App\Http\Controllers\MeatAllocationsController@downloadAllocationForm');
+
+});
+
+Route::group(['middleware' => ['auth', 'activated','web', 'activity','manageradmin']], function () {
+
     // jobcards
     Route::resource('jobcards', 'App\Http\Controllers\JobcardsController');
     Route::resource('deleted-jobcards','App\Http\Controllers\SoftDeleteJobcardsController');
