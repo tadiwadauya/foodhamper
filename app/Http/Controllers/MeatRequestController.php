@@ -52,7 +52,7 @@ class MeatRequestController extends Controller
             'paynumber' => 'required',
             'department' => 'required',
             'name' => 'required',
-            'type' => 'required'
+            'allocation' => ['required', 'unique:meat_requests']
         ]);
 
         if ($validator->fails()) {
@@ -60,68 +60,21 @@ class MeatRequestController extends Controller
         } else {
 
             try {
-                $frequest = new MeatRequest();
-                $frequest->paynumber = $request->input('paynumber');
-                $frequest->department = $request->input('department');
-                $frequest->name = $request->input('name');
-
-                if ($request->type == "meat") {
-                    $frequest->type = $request->type;
-
-                    if ($request->allocation) {
-                        $user_alloc = Allocation::where('allocation', $request->allocation)->first();
-
-                        if ($user_alloc->meet_allocation > 0) {
-                            $frequest->allocation = $request->input('allocation');
-                        } else {
-                            $user_name = User::where('paynumber', $request->paynumber)->first();
-
-                            return back()->with('error', " $user_name->full_name has already collected meat humber for $request->allocation .");
-                        }
-                    } else {
-
-                        return back()->with('error', 'Selected user does not have pending allocations.');
-                    }
-                } else {
-                    $user = User::where('paynumber', $request->paynumber)->first();
-                    $department = Department::where('name', '=', 'Executive')->first();
-
-                    if ($user->department_id == $department->id) {
-                        $frequest->type = $request->type;
-                    } else {
-
-                        return back()->with('error', 'Selected user cannot apply for extra Hamper');
-                    }
-                }
+                $mrequest = new MeatRequest();
                 $latest = MeatRequest::latest()->first();
+                if (!$latest) {
+                    $mrequest->request = 'REQ' . ((int)1000000000 + 1);
+                } else {
+                    $mrequest->request = 'REQ' . ((int)1000000000 + $latest->id + 1);
+                }
 
-                $frequest->done_by = Auth::user()->full_name;
-                $frequest->request = 'REQ' . ((int)1000000000 + $latest->id + 1);
-                $frequest->save();
+                $mrequest->paynumber = $request->input('paynumber');
+                $mrequest->department = $request->input('department');
+                $mrequest->name = $request->input('name');
+                $mrequest->allocation = $request->input('allocation');
+                $mrequest->done_by = Auth::user()->full_name;
 
-                // if ($frequest->save()) {
-                //     $users = User::all();
-
-                //     foreach ($users as $user) {
-
-                //         if ($user->hasRole('admin')) {
-                //             try {
-                //                 $data = [
-                //                     'greeting' => 'Good day, ' . $user->full_name,
-                //                     'subject' => $frequest->user->full_name . ' has submitted a humber request. ',
-                //                     'body' => $frequest->user->full_name . ' has requested a ' . $request->type . ' humber for ' . $frequest->allocation,
-                //                     'action' => 'Approve Request',
-                //                     'actionUrl' => "http://192.168.1.242:8080/foodhumbers/email-approve/$frequest->id/$user->paynumber",
-                //                 ];
-
-                //                 $user->notify(new MeatRequest($data));
-                //             } catch (\Exception $e) {
-
-                //                 Log::info("Error" . $e);
-                //             }
-                //         }
-                //     }
-                // }
+                $mrequest->save();
 
                 $logged_user = Auth::user();
 
@@ -179,15 +132,15 @@ class MeatRequestController extends Controller
         } else {
             try {
 
-                $frequest = MeatRequest::findOrFail($id);
+                $mrequest = MeatRequest::findOrFail($id);
 
-                if ($frequest->status == "collected" || $frequest->status == "approved") {
-                    return back()->with("error", " Request has been $frequest->status already.");
+                if ($mrequest->status == "collected" || $mrequest->status == "approved") {
+                    return back()->with("error", " Request has been $mrequest->status already.");
                 } else {
-                    $frequest->reason = $request->input('reason');
-                    $frequest->status = "rejected";
-                    $frequest->trash = 0;
-                    $frequest->save();
+                    $mrequest->reason = $request->input('reason');
+                    $mrequest->status = "rejected";
+                    $mrequest->trash = 0;
+                    $mrequest->save();
 
                     return redirect('mrequests')->with('success', 'Request has been rejected successfully');
                 }
@@ -206,10 +159,10 @@ class MeatRequestController extends Controller
     public function destroy($id)
     {
         $user = Auth::user();
-        $frequest = MeatRequest::findOrFail($id);
+        $mrequest = MeatRequest::findOrFail($id);
 
-        if (($frequest->status == "not approved" && $frequest->issued_on == null) || ($frequest->status == "rejected" && $frequest->issued_on == null)) {
-            $frequest->delete();
+        if (($mrequest->status == "not approved" && $mrequest->issued_on == null) || ($mrequest->status == "rejected" && $mrequest->issued_on == null)) {
+            $mrequest->delete();
 
             if ($user->hasRole('admin')) {
                 return redirect('mrequests')->with('success', 'Request has been deleted successfully');
@@ -219,9 +172,9 @@ class MeatRequestController extends Controller
             }
         } else {
 
-            if ($frequest->status == "approved") {
+            if ($mrequest->status == "approved") {
                 if ($user->hasRole('admin')) {
-                    $frequest->delete();
+                    $mrequest->delete();
                     return redirect('mrequests')->with('success', 'Request has been deleted Successfully');
                 } else {
 
@@ -433,8 +386,8 @@ class MeatRequestController extends Controller
 
     public function rejectRequest($id)
     {
-        $frequest = MeatRequest::findOrFail($id);
-        return view('mrequests.reject', compact('frequest'));
+        $mrequest = MeatRequest::findOrFail($id);
+        return view('mrequests.reject', compact('mrequest'));
     }
 
     public function getApproved()
@@ -455,16 +408,16 @@ class MeatRequestController extends Controller
         return view('mrequests.collected', compact('mrequests'));
     }
 
-    public function getAllocation($paynumber)
+    public function getMeatAllocation($paynumber)
     {
 
-        $allocation = DB::table('allocations')->where([
-            ['paynumber', '=', $paynumber],
-            ['food_allocation', '=', 1], ['deleted_at', '=', null]
-        ])
-            ->orWhere([['meet_allocation', '=', 1], ['paynumber', '=', $paynumber], ['deleted_at', '=', null]])
+        $allocation = DB::table('allocations')
+            ->where([
+                ['paynumber', '=', $paynumber],
+                ['food_allocation', '=', 1], ['deleted_at', '=', null], ['status', '=', 'not collected']
+            ])
             ->pluck('allocation');
-
+        // dd($allocation);
         return response()->json($allocation);
     }
 
@@ -533,18 +486,18 @@ class MeatRequestController extends Controller
         $count = 0;
         for ($count; $count < count($request->paynumber); $count++) {
             if ($request->paynumber) {
-                $frequest = MeatRequest::where('paynumber', $request->paynumber[$count])->first();
-                $allocation = Allocation::where('paynumber', $frequest->paynumber)->first();
+                $mrequest = MeatRequest::where('paynumber', $request->paynumber[$count])->first();
+                $allocation = Allocation::where('paynumber', $mrequest->paynumber)->first();
 
                 $settings = HumberSetting::where('id', 1)->first();
 
-                $request_type = $frequest->type;
+                $request_type = $mrequest->type;
 
                 if ($request_type == 'meat') {
                     if ($settings->food_available == 1) {
                         if ($allocation->food_allocation == 1) {
                             // check if there is a request approved for the same allocation
-                            $previous = MeatRequest::where('allocation', $frequest->allocation)
+                            $previous = MeatRequest::where('allocation', $mrequest->allocation)
                                 ->where('type', '=', 'meat')
                                 ->where('status', '=', 'approved')
                                 ->where('trash', '=', 1)
@@ -554,17 +507,17 @@ class MeatRequestController extends Controller
                                 $jobcard = Jobcard::where('remaining', '>', 0)->where('card_type', '=', 'meat')->first();
 
                                 if ($jobcard) {
-                                    $job_month = $frequest->paynumber . $jobcard->card_month;
+                                    $job_month = $mrequest->paynumber . $jobcard->card_month;
                                     $user_status_activated = $allocation->user->activated;
 
                                     if ($user_status_activated == 1) {
-                                        $frequest->status = "approved";
-                                        $frequest->trash = 1;
-                                        $frequest->done_by = Auth::user()->name;
-                                        $frequest->approver = Auth::user()->paynumber;
-                                        $frequest->updated_at = now();
-                                        $frequest->jobcard = $jobcard->card_number;
-                                        $frequest->save();
+                                        $mrequest->status = "approved";
+                                        $mrequest->trash = 1;
+                                        $mrequest->done_by = Auth::user()->name;
+                                        $mrequest->approver = Auth::user()->paynumber;
+                                        $mrequest->updated_at = now();
+                                        $mrequest->jobcard = $jobcard->card_number;
+                                        $mrequest->save();
 
                                         $jobcard->updated_at = now();
                                         $jobcard->issued += 1;
@@ -580,12 +533,12 @@ class MeatRequestController extends Controller
                                 }
                             } else {
 
-                                if ($frequest->id == $previous->id) {
+                                if ($mrequest->id == $previous->id) {
                                     continue;
                                 } else {
 
-                                    $frequest->status = "rejected";
-                                    $frequest->delete();
+                                    $mrequest->status = "rejected";
+                                    $mrequest->delete();
                                 }
                             }
                         }
@@ -596,7 +549,7 @@ class MeatRequestController extends Controller
                     if ($settings->meat_available == 1) {
                         if ($allocation->meet_allocation == 1) {
                             // check if there is a request approved for the same allocation
-                            $previous = MeatRequest::where('allocation', $frequest->allocation)
+                            $previous = MeatRequest::where('allocation', $mrequest->allocation)
                                 ->where('type', '=', 'meat')
                                 ->where('status', '=', 'approved')
                                 ->where('trash', '=', 1)
@@ -606,17 +559,17 @@ class MeatRequestController extends Controller
                                 $jobcard = Jobcard::where('remaining', '>', 0)->where('card_type', '=', 'meat')->first();
 
                                 if ($jobcard) {
-                                    $job_month = $frequest->paynumber . $jobcard->card_month;
+                                    $job_month = $mrequest->paynumber . $jobcard->card_month;
                                     $user_status_activated = $allocation->user->activated;
 
                                     if ($user_status_activated == 1) {
-                                        $frequest->status = "approved";
-                                        $frequest->trash = 1;
-                                        $frequest->done_by = Auth::user()->name;
-                                        $frequest->approver = Auth::user()->paynumber;
-                                        $frequest->updated_at = now();
-                                        $frequest->jobcard = $jobcard->card_number;
-                                        $frequest->save();
+                                        $mrequest->status = "approved";
+                                        $mrequest->trash = 1;
+                                        $mrequest->done_by = Auth::user()->name;
+                                        $mrequest->approver = Auth::user()->paynumber;
+                                        $mrequest->updated_at = now();
+                                        $mrequest->jobcard = $jobcard->card_number;
+                                        $mrequest->save();
 
                                         $jobcard->updated_at = now();
 
@@ -634,12 +587,12 @@ class MeatRequestController extends Controller
                                 }
                             } else {
 
-                                if ($frequest->id == $previous->id) {
+                                if ($mrequest->id == $previous->id) {
                                     continue;
                                 } else {
 
-                                    $frequest->status = "rejected";
-                                    $frequest->delete();
+                                    $mrequest->status = "rejected";
+                                    $mrequest->delete();
                                 }
                             }
                         }

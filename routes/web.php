@@ -163,7 +163,7 @@ Route::group(['middleware' => ['auth', 'activated', 'web', 'activity']], functio
     Route::get('/pending-meat-requests', 'App\Http\Controllers\MeatRequestController@getPending');
     Route::get('/collected-meat-requests', 'App\Http\Controllers\MeatRequestController@getCollectedRequests');
 
-    Route::get('/get-allocation-meat-request/{paynumber}', 'App\Http\Controllers\MeatRequestController@getAllocation');
+    Route::get('/get-allocation-meat-request/{paynumber}', 'App\Http\Controllers\MeatRequestController@getMeatAllocation');
     Route::get('/get-daily-meat-approval', 'App\Http\Controllers\MeatRequestController@dailyApproval');
     Route::post('/get-daily-meat-post', 'App\Http\Controllers\MeatRequestController@dailyApprovalSearch')->name("daily");
 });

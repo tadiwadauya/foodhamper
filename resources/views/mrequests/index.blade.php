@@ -1,4 +1,4 @@
-a@extends('layouts.app')
+@extends('layouts.app')
 
 @section('template_linked_css')
     <link rel="stylesheet" type="text/css" href="{{ asset('dash_resource/css/datatables.bootstrap4.min.css') }}">

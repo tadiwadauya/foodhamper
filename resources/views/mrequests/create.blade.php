@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('template_title')
-    Create new food request
+    Create Meat Request
 @endsection
 
 @section('template_linked_css')
@@ -14,7 +14,7 @@
             <div class="col-lg-8">
                 <div class="page-header-title">
                     <div class="d-inline">
-                        <h5>Food Requests</h5>
+                        <h5>Meat Requests</h5>
                         <span class="pcoded-mtext"> Add New</span>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header pb-0">
-                                    <h4 style="font-size:18px;">Create new hamper request <span>
+                                    <h4 style="font-size:18px;">Create Meat Request <span>
                                             @if ($settings->food_available == 1 && $settings->meat_available == 1)
                                                 <span class="badge badge-success">Status - [ You can request for both food
                                                     and meat humber]</span>
@@ -131,7 +131,7 @@
                                                 </span>
                                             @enderror
                                         </div>
-                                        <div class="form-group row">
+                                        {{-- <div class="form-group row">
                                             <label for="type" class="col-sm-2 col-form-label">Request Type : </label>
                                             <div class="col-sm-10">
                                                 <select name="type" id="type" class="form-control"
@@ -156,12 +156,12 @@
                                                     <strong> {{ $message }}</strong>
                                                 </span>
                                             @enderror
-                                        </div>
+                                        </div> --}}
                                         <div class="form-group row justify-content-end">
                                             <button class="btn waves-effect btn-round waves-light btn-sm mr-4 btn-primary"
-                                                @if ($settings->food_available == 0 && $settings->meat_available == 0) disabled
-                                    @else @endif>Send
-                                                Request</button>
+                                                @if ($settings->food_available == 0 && $settings->meat_available == 0) disabled @endif>
+                                                Send Request
+                                            </button>
                                         </div>
                                     </form>
                                 </div>
@@ -220,7 +220,7 @@
 
                 $.ajax({
                     type: "get",
-                    url: "/get-allocation-request/" + paynumber,
+                    url: "/get-allocation-meat-request/" + paynumber,
                     _token: _token,
                     success: function(res) {
                         if (res) {

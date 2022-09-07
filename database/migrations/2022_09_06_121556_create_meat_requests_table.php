@@ -15,16 +15,17 @@ class CreateMeatRequestsTable extends Migration
     {
         Schema::create('meat_requests', function (Blueprint $table) {
             $table->id();
+            $table->string('request')->unique();
             $table->string('paynumber');
             $table->string('department');
             $table->string('name');
-            $table->string('allocation')->nullable();
+            $table->string('allocation')->nullable()->unique();
             $table->string('done_by');
             $table->string('status')->default('not approved');
-            $table->string('reason')->nullable();
             $table->boolean('trash')->default(0);
             $table->string('jobcard')->nullable();
-            $table->string('type');
+            $table->timestamp('issued_on')->nullable();
+            $table->string('approver')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

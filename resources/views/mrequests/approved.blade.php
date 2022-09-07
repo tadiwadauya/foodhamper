@@ -58,8 +58,6 @@
                                                     <th>Done By</th>
                                                     <th>Date created</th>
                                                     <th>Status</th>
-                                                    <th>Request Type</th>
-
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -92,8 +90,6 @@
                                                                 <span
                                                                     class="badge badge-{{ $badgeClass }}">{{ $frequest->status }}</span>
                                                             </td>
-                                                            <td>{{ $frequest->type }}</td>
-
                                                         </tr>
                                                     @endforeach
                                                 @endif
