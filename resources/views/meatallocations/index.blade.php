@@ -12,8 +12,8 @@
         <div class="col-lg-8">
             <div class="page-header-title">
                 <div class="d-inline">
-                    <h5>Allocations</h5>
-                    <span class="pcoded-mtext"> Users Allocations</span>
+                    <h5>Meat Allocations</h5>
+                    <span class="pcoded-mtext"> Users Meat Allocations</span>
                 </div>
             </div>
         </div>
@@ -26,10 +26,10 @@
                         ></a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="{{ url('allocations') }}">Allocations</a>
+                        <a href="{{ url('meatallocations') }}">Meat Allocations</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="{{ url('allocations/create') }}">Add New</a>
+                        <a href="{{ url('meatallocations/create') }}">Add New</a>
                     </li>
                 </ul>
             </div>
@@ -45,7 +45,7 @@
                     <div class="col-sm-12">
                       <div class="card">
                         <div class="card-header" style="margin-bottom: 0;padding-bottom:0;">
-                            <h4 style="font-size:16px;margin-bottom:0;">Showing all user allocations <span class="float-right"><a href="{{ url('/allocations/create') }}" class="d-inline btn btn-sm btn-round btn-outline-secondary">Add New</a></span> </h4>
+                            <h4 style="font-size:16px;margin-bottom:0;">Showing all user meat allocations <span class="float-right"><a href="{{ url('/meatallocations/create') }}" class="d-inline btn btn-sm btn-round btn-outline-secondary">Add New</a></span> </h4>
                         </div>
                         <div class="card-block">
                           <div class="dt-responsive table-responsive">
@@ -59,37 +59,39 @@
                                   <th>Paynumber</th>
 
                                   <th>Allocation</th>
-                                  <th>Food</th>
-
+                                  <th>meat</th>
+                                  <th>meat A</th>
+                                  <th>meat B</th>
                                   <th>Status</th>
                                   <th>Action</th>
                                 </tr>
                               </thead>
                               <tbody>
-                                @if ($allocations)
+                                @if ($meatallocations)
 
                                     @php
                                         $i=1;
                                     @endphp
 
-                                    @foreach ($allocations as $allocation )
+                                    @foreach ($meatallocations as $meatallocation )
 
                                         <tr>
                                             <td>{{ $i }}</td>
-                                            <td>{{ $allocation->paynumber }}</td>
-                                            <td>{{ $allocation->allocation }}</td>
-                                            <td>{{ $allocation->food_allocation }}</td>
-                                          
+                                            <td>{{ $meatallocation->paynumber }}</td>
+                                            <td>{{ $meatallocation->meatallocation }}</td>
+                                            <td>{{ $meatallocation->meat_allocation }}</td>
+                                            <td>{{ $meatallocation->meat_a }}</td>
+                                            <td>{{ $meatallocation->meat_b }}</td>
                                             <td>
-                                                @if ($allocation->status == 'not collected')
+                                                @if ($meatallocation->status == 'not collected')
                                                     @php
                                                         $badgeClass = 'success'
                                                     @endphp
-                                                @elseif($allocation->status == 'partial')
+                                                @elseif($meatallocation->status == 'partial')
                                                     @php
                                                         $badgeClass = 'warning'
                                                     @endphp
-                                                @elseif($allocation->status == 'collected')
+                                                @elseif($meatallocation->status == 'collected')
                                                     @php
                                                         $badgeClass = 'danger'
                                                     @endphp
@@ -98,17 +100,17 @@
                                                 @endif
                                                 <span
                                                         class="badge badge-{{$badgeClass}}"
-                                                        >{{ $allocation->status }}</span
+                                                        >{{ $meatallocation->status }}</span
                                                     >
 
                                             </td>
                                             <td style="white-space: nowrap;width:20%;">
-                                                <a href="{{ route('allocations.edit',$allocation->id) }}" data-toggle="tooltip" title="Edit Allocation" class="d-inline btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a>
-                                                <a href="{{ route('allocations.show',$allocation->id) }}" data-toggle="tooltip" title="Show Allocation" class="d-inline btn btn-success btn-sm"><i class="fa fa-eye"></i></a>
-                                                <form method="POST" role="form" class="d-inline" action="{{ route('allocations.destroy',$allocation->id) }}">
+                                                <a href="{{ route('meatallocations.edit',$meatallocation->id) }}" data-toggle="tooltip" title="Edit MeatAllocation" class="d-inline btn btn-sm btn-primary"><i class="fa fa-pencil"></i></a>
+                                                <a href="{{ route('meatallocations.show',$meatallocation->id) }}" data-toggle="tooltip" title="Show MeatAllocation" class="d-inline btn btn-success btn-sm"><i class="fa fa-eye"></i></a>
+                                                <form method="POST" role="form" class="d-inline" action="{{ route('meatallocations.destroy',$meatallocation->id) }}">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="d-inline btn-sm btn btn-danger" data-toggle="tooltip" title="Delete Allocation"><i class="fa fa-trash-o"></i></button>
+                                                    <button type="submit" class="d-inline btn-sm btn btn-danger" data-toggle="tooltip" title="Delete MeatAllocation"><i class="fa fa-trash-o"></i></button>
                                                 </form>
                                             </td>
                                         </tr>

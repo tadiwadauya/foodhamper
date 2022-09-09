@@ -11,8 +11,8 @@
         <div class="col-lg-8">
             <div class="page-header-title">
                 <div class="d-inline">
-                    <h5>Allocations</h5>
-                    <span class="pcoded-mtext"> Add Allocation</span>
+                    <h5>Meat Allocations</h5>
+                    <span class="pcoded-mtext"> Add Meat Allocation</span>
                 </div>
             </div>
         </div>
@@ -25,10 +25,10 @@
                         ></a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="{{ url('allocations') }}">Allocations</a>
+                        <a href="{{ url('meatallocations') }}">Meat Allocations</a>
                     </li>
                     <li class="breadcrumb-item">
-                        <a href="{{ url('allocations/create') }}">Add New</a>
+                        <a href="{{ url('meatallocations/create') }}">Add New</a>
                     </li>
                 </ul>
             </div>
@@ -44,11 +44,11 @@
                     <div class="col-sm-12">
                       <div class="card">
                         <div class="card-header pb-0">
-                            <h4 style="margin-bottom:0">Create new Allocation</h4>
+                            <h4 style="margin-bottom:0">Create new Meat Allocation</h4>
                         </div>
                         <div class="card-block" style="padding-top: 7px;margin-top:0;">
                             <h4 class="sub-title"></h4>
-                            <form method="POST" action="{{ route('allocations.store') }}">
+                            <form method="POST" action="{{ route('meatallocations.store') }}">
                                 @csrf
                                 <div class="form-group row">
                                     <label for="paynumber" class="col-sm-2 col-form-label"
@@ -71,23 +71,57 @@
                                     @enderror
                                 </div>
                                 <div class="form-group row">
-                                    <label for="allocation" class="col-sm-2 col-form-label"
+                                    <label for="meatallocation" class="col-sm-2 col-form-label"
                                         >Month : </label
                                     >
                                     <div class="col-sm-10">
-                                        <input type="text" id="allocation" class="form-control" name="allocation" placeholder="e.g January2021" required="" autofocus>
+                                        <input type="text" id="meatallocation" class="form-control" name="meatallocation" placeholder="e.g January2021" required="" autofocus>
                                     </div>
-                                    @error('allocation')
+                                    @error('meatallocation')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong> {{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <div class="form-group row">
+                                    <label for="meat_a" class="col-sm-2 col-form-label"
+                                        >Meat Type 1 : </label
+                                    >
+                                    <div class="col-sm-10">
+                                        <select name="meat_a" id="meat_a" class="form-control" style="width: 100%;" required="" autofocus>
+                                            <option value="">Please select meat type</option>
+                                            <option value="beef">Beef</option>
+                                            <option value="chicken">Chicken</option>
+                                            <option value="pork">Pork</option>
+                                        </select>
+                                    </div>
+                                    @error('meat_a')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong> {{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+                                <div class="form-group row">
+                                    <label for="meat_b" class="col-sm-2 col-form-label"
+                                        >Meat Type 2 : </label
+                                    >
+                                    <div class="col-sm-10">
+                                        <select name="meat_b" id="meat_b" class="form-control" style="width: 100%;">
+                                            <option value="">Please select meat type</option>
+                                            <option value="beef">Beef</option>
+                                            <option value="chicken">Chicken</option>
+                                            <option value="pork">Pork</option>
+                                        </select>
+                                    </div>
+                                    @error('meat_b')
                                         <span class="invalid-feedback" role="alert">
                                             <strong> {{ $message }}</strong>
                                         </span>
                                     @enderror
                                 </div>
 
-
-
                                 <div class="form-group row justify-content-end">
-                                    <button class="btn waves-effect btn-round waves-light btn-sm mr-4 btn-success">Create Allocation</button>
+                                    <button class="btn waves-effect btn-round waves-light btn-sm mr-4 btn-success">Create Meat Allocation</button>
                                 </div>
                             </form>
                         </div>
@@ -110,15 +144,15 @@
 </script>
 <script>
     $(document).ready(function() {
-        $('#meet_a').select2({
-            placeholder:'Select meet type'
+        $('#meat_a').select2({
+            placeholder:'Select meat type'
         });
     });
 </script>
 <script>
     $(document).ready(function() {
-        $('#meet_b').select2({
-            placeholder: 'Select meet type'
+        $('#meat_b').select2({
+            placeholder: 'Select meat type'
         });
     });
 </script>

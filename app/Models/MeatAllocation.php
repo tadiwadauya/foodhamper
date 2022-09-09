@@ -6,15 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Allocation extends Model
+class MeatAllocation extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'paynumber',
-        'food_allocation',
-
-        'allocation',
+        'meat_allocation',
+        'meat_a',
+        'meat_b',
+        'meatallocation',
         'status'
     ];
 
@@ -24,21 +25,17 @@ class Allocation extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'paynumber', 'paynumber');
+        return $this->belongsTo(User::class,'paynumber','paynumber');
     }
 
-    public function fcollection()
+    public function mcollection()
     {
-        return $this->hasOne(FoodCollection::class, 'allocation', 'allocation');
+        return $this->hasOne(MeatCollection::class,'meatallocation','meatallocation');
     }
 
     public function frequest()
     {
-        return $this->hasMany(FoodRequest::class);
-    }
-
-    public function mrequest()
-    {
         return $this->hasMany(MeatRequest::class);
     }
+
 }
