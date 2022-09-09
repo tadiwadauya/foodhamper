@@ -83,42 +83,8 @@
                                         </span>
                                     @enderror
                                 </div>
-                                <div class="form-group row">
-                                    <label for="meet_a" class="col-sm-2 col-form-label"
-                                        >Meat Type 1 : </label
-                                    >
-                                    <div class="col-sm-10">
-                                        <select name="meet_a" id="meet_a" class="form-control" style="width: 100%;" required="" autofocus>
-                                            <option value="">Please select meet type</option>
-                                            <option value="beef">Beef</option>
-                                            <option value="chicken">Chicken</option>
-                                            <option value="pork">Pork</option>
-                                        </select>
-                                    </div>
-                                    @error('meet_a')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong> {{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group row">
-                                    <label for="meet_b" class="col-sm-2 col-form-label"
-                                        >Meat Type 2 : </label
-                                    >
-                                    <div class="col-sm-10">
-                                        <select name="meet_b" id="meet_b" class="form-control" style="width: 100%;">
-                                            <option value="">Please select meet type</option>
-                                            <option value="beef">Beef</option>
-                                            <option value="chicken">Chicken</option>
-                                            <option value="pork">Pork</option>
-                                        </select>
-                                    </div>
-                                    @error('meet_b')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong> {{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
+
+
 
                                 <div class="form-group row justify-content-end">
                                     <button class="btn waves-effect btn-round waves-light btn-sm mr-4 btn-success">Create Allocation</button>

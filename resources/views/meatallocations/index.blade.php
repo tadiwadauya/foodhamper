@@ -78,7 +78,7 @@
                                         <tr>
                                             <td>{{ $i }}</td>
                                             <td>{{ $meatallocation->paynumber }}</td>
-                                            <td>{{ $meatallocation->allocation }}</td>
+                                            <td>{{ $meatallocation->meatallocation }}</td>
                                             <td>{{ $meatallocation->meat_allocation }}</td>
                                             <td>{{ $meatallocation->meat_a }}</td>
                                             <td>{{ $meatallocation->meat_b }}</td>

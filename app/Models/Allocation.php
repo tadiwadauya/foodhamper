@@ -13,9 +13,7 @@ class Allocation extends Model
     protected $fillable = [
         'paynumber',
         'food_allocation',
-        'meet_allocation',
-        'meet_a',
-        'meet_b',
+
         'allocation',
         'status'
     ];

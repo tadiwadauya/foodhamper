@@ -18,9 +18,9 @@ class CreateAllocationsTable extends Migration
             $table->string('allocation')->unique();
             $table->string('paynumber');
             $table->integer('food_allocation');
-            $table->integer('meet_allocation');
-            $table->string('meet_a');
-            $table->string('meet_b');
+            $table->integer('meet_allocation')->nullable()->change();
+            $table->string('meet_a')->nullable()->change();
+            $table->string('meet_b')->nullable()->change();
             $table->string('status')->default("not collected");
             $table->softDeletes();
             $table->timestamps();

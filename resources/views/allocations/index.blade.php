@@ -60,9 +60,7 @@
 
                                   <th>Allocation</th>
                                   <th>Food</th>
-                                  <th>Meet</th>
-                                  <th>Meet A</th>
-                                  <th>Meet B</th>
+
                                   <th>Status</th>
                                   <th>Action</th>
                                 </tr>
@@ -81,9 +79,7 @@
                                             <td>{{ $allocation->paynumber }}</td>
                                             <td>{{ $allocation->allocation }}</td>
                                             <td>{{ $allocation->food_allocation }}</td>
-                                            <td>{{ $allocation->meet_allocation }}</td>
-                                            <td>{{ $allocation->meet_a }}</td>
-                                            <td>{{ $allocation->meet_b }}</td>
+                                          
                                             <td>
                                                 @if ($allocation->status == 'not collected')
                                                     @php

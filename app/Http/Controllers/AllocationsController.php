@@ -48,8 +48,6 @@ class AllocationsController extends Controller
 
         $validator = Validator::make($request->all(), [
             'paynumber' => 'required',
-            'meet_a' => 'required',
-            'meet_b' => 'required',
             'allocation' => 'required',
         ]);
 
@@ -74,9 +72,6 @@ class AllocationsController extends Controller
                             $allocation = Allocation::create([
                                 'paynumber' => $request->input('paynumber'),
                                 'allocation' => $create_alloc ,
-                                'meet_a' => $request->input('meet_a'),
-                                'meet_b' => $request->input('meet_b'),
-                                'meet_allocation' => 1,
                                 'food_allocation' => 1,
                                 'status' => 'not collected',
                             ]);
@@ -86,7 +81,6 @@ class AllocationsController extends Controller
                             if ($allocation->save())
                             {
                                 $allocation->user->fcount += 1;
-                                $allocation->user->mcount += 1;
                                 $allocation->user->save();
 
                                 return redirect('allocations')->with('success','User has been allocated successfully');
@@ -96,7 +90,7 @@ class AllocationsController extends Controller
                         {
                             echo 'Error'.$e;
                         }
-                        
+
                     } else {
 
                         // previous allocation
@@ -110,9 +104,6 @@ class AllocationsController extends Controller
                                 $allocation = Allocation::create([
                                     'paynumber' => $request->input('paynumber'),
                                     'allocation' => $create_alloc ,
-                                    'meet_a' => $request->input('meet_a'),
-                                    'meet_b' => $request->input('meet_b'),
-                                    'meet_allocation' => 1,
                                     'food_allocation' => 1,
                                     'status' => 'not collected',
                                 ]);
@@ -121,7 +112,6 @@ class AllocationsController extends Controller
                                 if ($allocation->save())
                                 {
                                     $allocation->user->fcount += 1;
-                                    $allocation->user->mcount += 1;
                                     $allocation->user->save();
 
                                     return redirect('allocations')->with('success','Previous allocation has been created successfully.');
@@ -178,20 +168,7 @@ class AllocationsController extends Controller
      */
     public function update(Request $request, Allocation $allocation)
     {
-        $validator = Validator::make($request->all(), [
-            'meet_a' => 'required',
-            'meet_b' => 'required',
-        ]);
 
-        if($validator->fails()){
-            return back()->withErrors($validator)->withInput();
-        }
-
-        $allocation->meet_a = $request->input('meet_a');
-        $allocation->meet_b = $request->input('meet_b');
-        $allocation->save();
-
-        return redirect('allocations')->with('success','Allocation has been updated successfully');
     }
 
     /**
@@ -214,7 +191,6 @@ class AllocationsController extends Controller
             if ($deleted)
             {
                 $allocation->user->fcount -= 1;
-                $allocation->user->mcount -= 1;
                 $allocation->user->save();
 
                 return redirect('allocations')->with('success','Allocation has been deleted successfully');
@@ -281,16 +257,14 @@ class AllocationsController extends Controller
                             'allocation' => $month_allocation,
                             'paynumber' => $user->paynumber,
                             'food_allocation' => 1,
-                            'meet_allocation' => 1,
-                            'meet_a' => $last_month->meet_a,
-                            'meet_b' => $last_month->meet_b,
+
                         ]);
                         $allocation->save();
 
                         if ($allocation->save()) {
 
                             $allocation->user->fcount += 1;
-                            $allocation->user->mcount +=1;
+
                             $allocation->user->save();
                         }
                     } else {
