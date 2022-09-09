@@ -23,7 +23,7 @@ class AllocationsController extends Controller
     public function index()
     {
         $allocations = Allocation::orderBy('created_at', 'desc')->get();
-        return view('allocations.index',compact('allocations'));
+        return view('allocations.index', compact('allocations'));
     }
 
     /**
@@ -33,8 +33,8 @@ class AllocationsController extends Controller
      */
     public function create()
     {
-        $users = User::where('activated',1)->get();
-        return view('allocations.create',compact('users'));
+        $users = User::where('activated', 1)->get();
+        return view('allocations.create', compact('users'));
     }
 
     /**
@@ -51,56 +51,50 @@ class AllocationsController extends Controller
             'allocation' => 'required',
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
-        }
-        else {
+        } else {
 
             try {
-                $user = User::where('paynumber',$request->paynumber)->first();
+                $user = User::where('paynumber', $request->paynumber)->first();
 
                 if ($user->activated == 1) {
 
                     $allocations = $user->allocations->count();
 
-                    if ($allocations == 0)
-                    {
-                        $create_alloc = $request->paynumber.$request->input('allocation');
+                    if ($allocations == 0) {
+                        $create_alloc = $request->paynumber . $request->input('allocation');
 
                         try {
 
                             $allocation = Allocation::create([
                                 'paynumber' => $request->input('paynumber'),
                                 'allocation' => $create_alloc ,
+
                                 'food_allocation' => 1,
                                 'status' => 'not collected',
                             ]);
 
                             $allocation->save();
 
-                            if ($allocation->save())
-                            {
+                            if ($allocation->save()) {
                                 $allocation->user->fcount += 1;
                                 $allocation->user->save();
 
-                                return redirect('allocations')->with('success','User has been allocated successfully');
+                                return redirect('allocations')->with('success', 'User has been allocated successfully');
                             }
-
-                        } catch (\Exception $e)
-                        {
-                            echo 'Error'.$e;
+                        } catch (\Exception $e) {
+                            echo 'Error' . $e;
                         }
-
                     } else {
 
                         // previous allocation
                         $user = Auth::user();
-                        $create_alloc = $request->paynumber.$request->input('allocation');
+                        $create_alloc = $request->paynumber . $request->input('allocation');
 
                         try {
 
-                            if ($user->hasRole('admin'))
-                            {
+                            if ($user->hasRole('admin')) {
                                 $allocation = Allocation::create([
                                     'paynumber' => $request->input('paynumber'),
                                     'allocation' => $create_alloc ,
@@ -109,32 +103,24 @@ class AllocationsController extends Controller
                                 ]);
                                 $allocation->save();
 
-                                if ($allocation->save())
-                                {
+                                if ($allocation->save()) {
                                     $allocation->user->fcount += 1;
                                     $allocation->user->save();
 
-                                    return redirect('allocations')->with('success','Previous allocation has been created successfully.');
+                                    return redirect('allocations')->with('success', 'Previous allocation has been created successfully.');
                                 }
                             }
-
                         } catch (\Exception $e) {
-                            echo "Error - ".$e;
+                            echo "Error - " . $e;
                         }
                     }
-
+                } else {
+                    return redirect()->back()->with('warning', 'User is not activated.');
                 }
-                else {
-                    return redirect()->back()->with('warning','User is not activated.');
-                }
-
             } catch (\Exception $th) {
-                echo "Error - ".$th;
+                echo "Error - " . $th;
             }
-
-
         }
-
     }
 
     /**
@@ -145,7 +131,7 @@ class AllocationsController extends Controller
      */
     public function show(Allocation $allocation)
     {
-        return view('allocations.show',compact('allocation'));
+        return view('allocations.show', compact('allocation'));
     }
 
     /**
@@ -156,7 +142,7 @@ class AllocationsController extends Controller
      */
     public function edit(Allocation $allocation)
     {
-        return view('allocations.edit',compact('allocation'));
+        return view('allocations.edit', compact('allocation'));
     }
 
     /**
@@ -184,42 +170,41 @@ class AllocationsController extends Controller
         // check the allocation status
         $status = $allocation->status;
 
-        if ($status == 'not collected')
-        {
+        if ($status == 'not collected') {
             $deleted = $allocation->delete();
 
-            if ($deleted)
-            {
+            if ($deleted) {
                 $allocation->user->fcount -= 1;
                 $allocation->user->save();
 
-                return redirect('allocations')->with('success','Allocation has been deleted successfully');
+                return redirect('allocations')->with('success', 'Allocation has been deleted successfully');
             }
-        }else
-        {
-            return redirect()->back()->with('error','Allocation has already been issued.');
+        } else {
+            return redirect()->back()->with('error', 'Allocation has already been issued.');
         }
 
-        return redirect('allocations')->with('success','Allocation has been deleted Successfully');
+        return redirect('allocations')->with('success', 'Allocation has been deleted Successfully');
     }
 
     public function getName($paynumber)
     {
         $name = DB::table("users")
-          ->where("paynumber",$paynumber)
-          ->pluck("user_id");
+            ->where("paynumber", $paynumber)
+            ->pluck("user_id");
 
         return response()->json($name);
     }
 
-    public function allocationImportForm() {
+    public function allocationImportForm()
+    {
 
         return view('allocations.import');
     }
 
-    public function allocationImportSend(Request $request) {
+    public function allocationImportSend(Request $request)
+    {
 
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'allocation' => 'required',
 
         ]);
@@ -228,7 +213,7 @@ class AllocationsController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
-        Excel::import(new AllocationsImport,request()->file('allocation'));
+        Excel::import(new AllocationsImport, request()->file('allocation'));
 
         return redirect('allocations')->with('Data has been imported successfully');
     }
@@ -243,15 +228,14 @@ class AllocationsController extends Controller
 
                 $month_allocation = date('FY');
 
-                if($user->allocation) {
+                if ($user->allocation) {
                     // check if user has been allocated for that month
-                    $allocation_user = Allocation::where('allocation',$month_allocation)
-                        ->where('paynumber',$user->paynumber)
+                    $allocation_user = Allocation::where('allocation', $month_allocation)
+                        ->where('paynumber', $user->paynumber)
                         ->latest()->first();
 
-                    if (!$allocation_user )
-                    {
-                        $last_month = DB::table('allocations')->where('paynumber',$user->paynumber)->orderByDesc('id')->first();
+                    if (!$allocation_user) {
+                        $last_month = DB::table('allocations')->where('paynumber', $user->paynumber)->orderByDesc('id')->first();
 
                         $allocation = Allocation::create([
                             'allocation' => $month_allocation,
@@ -264,7 +248,6 @@ class AllocationsController extends Controller
                         if ($allocation->save()) {
 
                             $allocation->user->fcount += 1;
-
                             $allocation->user->save();
                         }
                     } else {
@@ -274,34 +257,34 @@ class AllocationsController extends Controller
             }
         }
 
-        return redirect('allocations')->with('success','Users has been allocated Successfully');
+        return redirect('allocations')->with('success', 'Users has been allocated Successfully');
     }
 
     public function getDepartmentalUsers($department)
     {
-        if($department == "department") {
+        if ($department == "department") {
             $name = DB::table("departments")
-            ->where('id','>=',0)
-            ->pluck("department");
+                ->where('id', '>=', 0)
+                ->pluck("department");
             return response()->json($name);
         }
 
-        if( $department == "etype") {
+        if ($department == "etype") {
 
             $name = DB::table("usertypes")
-            ->where('id','>=',0)
-            ->pluck("type");
+                ->where('id', '>=', 0)
+                ->pluck("type");
             return response()->json($name);
         }
-
     }
 
-    public function getAllocation($paynumber) {
+    public function getAllocation($paynumber)
+    {
 
-        $allocation = Allocation::where('paynumber',$paynumber)
-                    ->where('food_allocation','>',0)
-                    ->where('deleted_at','=',null)
-                    ->pluck('allocation');
+        $allocation = Allocation::where('paynumber', $paynumber)
+            ->where('food_allocation', '>', 0)
+            ->where('deleted_at', '=', null)
+            ->pluck('allocation');
 
         return response()->json($allocation);
     }
@@ -312,5 +295,4 @@ class AllocationsController extends Controller
 
         return response()->download($myFile);
     }
-
 }

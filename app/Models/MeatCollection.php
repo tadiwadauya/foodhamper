@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MeatCollection extends Model
 {
-    use HasFactory,SoftDeletes;
+    use HasFactory, SoftDeletes;
 
-        protected $dates =  [
+    protected $dates =  [
         'deleted_at'
     ];
 
@@ -19,7 +19,7 @@ class MeatCollection extends Model
         'jobcard',
         'issue_date',
         'allocation',
-        'frequest',
+        'mrequest',
         'done_by',
         'status',
         'collected_by',
@@ -29,7 +29,7 @@ class MeatCollection extends Model
 
     public function allocation()
     {
-        return $this->belongsTo(Allocation::class,'allocation','allocation');
+        return $this->belongsTo(Allocation::class, 'allocation', 'allocation');
     }
 
     public function frequest()
@@ -39,12 +39,11 @@ class MeatCollection extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class,'paynumber','paynumber');
+        return $this->belongsTo(User::class, 'paynumber', 'paynumber');
     }
 
     public function job()
     {
-        return $this->belongsTo(Jobcard::class,'jobcard','card_number');
+        return $this->belongsTo(Jobcard::class, 'jobcard', 'card_number');
     }
-
 }

@@ -1,4 +1,4 @@
-a@extends('layouts.app')
+@extends('layouts.app')
 
 @section('template_linked_css')
     <link rel="stylesheet" type="text/css" href="{{ asset('dash_resource/css/datatables.bootstrap4.min.css') }}">
@@ -12,8 +12,8 @@ a@extends('layouts.app')
             <div class="col-lg-8">
                 <div class="page-header-title">
                     <div class="d-inline">
-                        <h5>Requested Hampers</h5>
-                        <span class="pcoded-mtext"> Overview Of Requested food Hampers</span>
+                        <h5>Requested Meat Humbers</h5>
+                        <span class="pcoded-mtext"> Overview Of Pending Requests</span>
                     </div>
                 </div>
             </div>
@@ -24,10 +24,10 @@ a@extends('layouts.app')
                             <a href="index.html"><i class="feather icon-home"></i></a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="{{ url('frequests') }}">Food Requests</a>
+                            <a href="{{ url('mrequests') }}">Meat Requests</a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="{{ url('frequests/create') }}">Add New</a>
+                            <a href="{{ url('mrequests/create') }}">Add New</a>
                         </li>
                     </ul>
                 </div>
@@ -43,8 +43,8 @@ a@extends('layouts.app')
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header" style="margin-bottom: 0;padding-bottom:0;">
-                                    <h4 style="font-size:16px;margin-bottom:0;">Showing all Hampers distributed
-                                        <span class="float-right mr-2"><a href="{{ url('delete_unattended_requests') }}"
+                                    <h4 style="font-size:16px;margin-bottom:0;">Showing All Pending Requests
+                                        <span class="float-right mr-2"><a href="{{ url('delete_pending_requests') }}"
                                                 class="btn btn-danger btn-sm btn-round"><i class="fa fa-trash-o"></i>Delete
                                                 Requests</a></span>
                                     </h4>
@@ -54,56 +54,32 @@ a@extends('layouts.app')
                                         <table id="basic-btn" class="table table-bordered nowrap">
                                             <thead>
                                                 <tr>
-                                                    <th>ID</th>
-                                                    <th>Paynumber</th>
                                                     <th>Name</th>
-                                                    <th>Department</th>
                                                     <th>Allocation</th>
-                                                    <th>Approved By</th>
+                                                    <th>Done By</th>
                                                     <th>Requested On</th>
-                                                    <th>Issued On</th>
                                                     <th>Status</th>
-                                                    <th>Request Type</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @if ($frequests)
-                                                    @php
-                                                        $i = 1;
-                                                    @endphp
-
-                                                    @foreach ($frequests as $frequest)
-                                                        @php
-                                                            $user = \App\Models\User::where('paynumber', $frequest->paynumber)->first();
-                                                        @endphp
+                                                @if ($mrequests)
+                                                    @foreach ($mrequests as $mrequest)
                                                         <tr>
-                                                            <td>{{ $i }}</td>
-                                                            <td>{{ $frequest->paynumber }}</td>
+                                                            <td>{{ $mrequest->user->full_name }}</td>
+                                                            <td>{{ $mrequest->allocation }}</td>
+                                                            <td>{{ $mrequest->done_by }}</td>
+                                                            <td>{{ $mrequest->created_at }}</td>
                                                             <td>
-                                                                {{ !empty($user->full_name) ? $user->full_name : '' }}
-                                                            </td>
-                                                            <td>{{ $frequest->department }}</td>
-                                                            <td>{{ $frequest->allocation }}</td>
-                                                            <td>
-                                                                @if ($frequest->status == 'approved' || $frequest->status == 'collected')
-                                                                    {{ $frequest->approve->name }}
-                                                                @endif
-                                                            </td>
-                                                            <td>{{ $frequest->created_at }}</td>
-                                                            <td>
-                                                                {{ $frequest->issued_on }}
-                                                            </td>
-                                                            <td>
-                                                                @if ($frequest->status == 'not approved')
+                                                                @if ($mrequest->status == 'not approved')
                                                                     @php
                                                                         $badgeClass = 'warning';
                                                                     @endphp
-                                                                @elseif($frequest->status == 'approved')
+                                                                @elseif($mrequest->status == 'approved')
                                                                     @php
                                                                         $badgeClass = 'success';
                                                                     @endphp
-                                                                @elseif($frequest->status == 'rejected')
+                                                                @elseif($mrequest->status == 'rejected')
                                                                     @php
                                                                         $badgeClass = 'danger';
                                                                     @endphp
@@ -111,32 +87,25 @@ a@extends('layouts.app')
                                                                     @php $badgeClass = 'default' @endphp
                                                                 @endif
                                                                 <span
-                                                                    class="badge badge-{{ $badgeClass }}">{{ $frequest->status }}</span>
+                                                                    class="badge badge-{{ $badgeClass }}">{{ $mrequest->status }}</span>
                                                             </td>
-                                                            <td>{{ $frequest->type }}</td>
                                                             <td style="white-space: nowrap;width:20%;">
-                                                                <a href="{{ url('approve-request/' . $frequest->id) }}"
+                                                                <a href="{{ url('approve-meat-request/' . $mrequest->id) }}"
                                                                     data-toggle="tooltip" title="Approve Request"
                                                                     class="d-inline btn btn-sm btn-primary"><i
                                                                         class="fa fa-pencil"></i></a>
-                                                                <a href="{{ url('reject-request/' . $frequest->id) }}"
+                                                                <a href="{{ url('reject-request/' . $mrequest->id) }}"
                                                                     data-toggle="tooltip" title="Reject Request"
                                                                     class="d-inline btn btn-success btn-sm">x</a>
-                                                                <form method="POST"
-                                                                    action="{{ route('frequests.destroy', $frequest->id) }}"
-                                                                    class="d-inline">
+                                                                <form method="POST" action="" class="d-inline">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                     <button class="d-inline btn-sm btn btn-danger"
-                                                                        data-toggle="tooltip" title="Delete Request"><i
+                                                                        data-toggle="tooltip" title="Delete Distribution"><i
                                                                             class="fa fa-trash-o"></i></button>
                                                                 </form>
                                                             </td>
                                                         </tr>
-
-                                                        @php
-                                                            $i++;
-                                                        @endphp
                                                     @endforeach
                                                 @endif
                                             </tbody>

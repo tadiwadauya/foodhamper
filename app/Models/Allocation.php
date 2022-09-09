@@ -24,12 +24,12 @@ class Allocation extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class,'paynumber','paynumber');
+        return $this->belongsTo(User::class, 'paynumber', 'paynumber');
     }
 
     public function fcollection()
     {
-        return $this->hasOne(FoodCollection::class,'allocation','allocation');
+        return $this->hasOne(FoodCollection::class, 'allocation', 'allocation');
     }
 
     public function frequest()
@@ -37,4 +37,8 @@ class Allocation extends Model
         return $this->hasMany(FoodRequest::class);
     }
 
+    public function mrequest()
+    {
+        return $this->hasMany(MeatRequest::class);
+    }
 }
