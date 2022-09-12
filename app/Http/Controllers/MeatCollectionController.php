@@ -35,13 +35,10 @@ class MeatCollectionController extends Controller
     public function create()
     {
         $requests = MeatRequest::where([
-            ['jobcard', '=', null],
+            ['trash', '=', 1],
             ['status', '=', 'approved'],
             ['issued_on', '=', null]
         ])
-            ->orWhere([
-                ['status', '=', 'approved']
-            ])
             ->get();
 
         return view('mcollections.create', compact('requests'));
@@ -103,19 +100,11 @@ class MeatCollectionController extends Controller
                     $collect->status = 1;
 
                     $jobcard = Jobcard::where('card_number', $request->input('jobcard'))->first();
-                    $job_month = $mrequest->paynumber . $jobcard->card_month;
+                    // $job_month = $mrequest->paynumber . $jobcard->card_month;
 
                     if ($jobcard->remaining > 0) {
                         $jobcard->updated_at = now();
                         $jobcard->issued += 1;
-                        // if ($job_month == $mrequest->allocation)
-                        // {
-                        //     $jobcard->issued += 1;
-
-                        // } else {
-
-                        //     $jobcard->extras_previous += 1;
-                        // }
 
                         $jobcard->remaining -= 1;
                         $jobcard->save();

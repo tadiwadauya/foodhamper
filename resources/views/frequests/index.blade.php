@@ -118,10 +118,11 @@ a@extends('layouts.app')
                                                                 <a href="{{ url('approve-request/' . $frequest->id) }}"
                                                                     data-toggle="tooltip" title="Approve Request"
                                                                     class="d-inline btn btn-sm btn-primary"><i
-                                                                        class="fa fa-pencil"></i></a>
+                                                                        class="fa fa-thumbs-up"></i></a>
                                                                 <a href="{{ url('reject-request/' . $frequest->id) }}"
                                                                     data-toggle="tooltip" title="Reject Request"
-                                                                    class="d-inline btn btn-success btn-sm">x</a>
+                                                                    class="d-inline btn btn-success btn-sm"><i
+                                                                        class="fa fa-thumbs-down"></i></a>
                                                                 <form method="POST"
                                                                     action="{{ route('frequests.destroy', $frequest->id) }}"
                                                                     class="d-inline">

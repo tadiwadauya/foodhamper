@@ -278,12 +278,12 @@
                     </ul>
                 </li>
 
-                    <div class="pcoded-navigation-label">Food Requests</div>
+                    <div class="pcoded-navigation-label">Requests</div>
 
                     <li class="pcoded-hasmenu">
                         <a href="javascript:void(0)" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="fa fa-file-excel-o"></i></span>
-                            <span class="pcoded-mtext">Requests</span>
+                            <span class="pcoded-mtext">Food Requests</span>
                         </a>
                         <ul class="pcoded-submenu">
                             <li class="">
@@ -324,12 +324,10 @@
                         </ul>
                     </li>
 
-                    <div class="pcoded-navigation-label">Meat Requests</div>
-
                     <li class="pcoded-hasmenu">
                         <a href="javascript:void(0)" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="fa fa-file-excel-o"></i></span>
-                            <span class="pcoded-mtext">Requests</span>
+                            <span class="pcoded-mtext"> Meat Requests</span>
                         </a>
                         <ul class="pcoded-submenu">
                             <li class="">

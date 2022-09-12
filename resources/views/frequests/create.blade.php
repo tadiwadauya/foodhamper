@@ -129,34 +129,6 @@
                                         </span>
                                     @enderror
                                 </div>
-                                <div class="form-group row">
-                                    <label for="type" class="col-sm-2 col-form-label"
-                                        >Request Type : </label
-                                    >
-                                    <div class="col-sm-10">
-                                        <select name="type" id="type" class="form-control" style="width: 100%">
-                                            <option value="">Please select request type</option>
-                                            @if ($settings->food_available == 1 && $settings->meat_available == 1)
-                                                <option value="food">Food Humber</option>
-                                                <option value="meat">Meat Humber</option>
-                                                <option value="extra">Extra Humber</option>
-                                            @elseif ($settings->food_available == 1)
-                                                <option value="food">Food Humber</option>
-                                                <option value="extra">Extra Humber</option>
-                                            @elseif ($settings->meat_available == 1)
-                                                <option value="meat">Meat Humber</option>
-                                                <option value="extra">Extra Humber</option>
-                                            @else
-
-                                            @endif
-                                        </select>
-                                    </div>
-                                    @error('type')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong> {{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
                                 <div class="form-group row justify-content-end">
                                     <button class="btn waves-effect btn-round waves-light btn-sm mr-4 btn-primary"
                                     @if ($settings->food_available == 0 && $settings->meat_available == 0)

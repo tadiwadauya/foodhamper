@@ -4,17 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Allocation;
 use App\Models\Beneficiary;
-use Illuminate\Http\Request;
-use App\Models\FoodCollection;
-use App\Models\FoodRequest;
+use App\Models\MeatRequest;
 use App\Models\Jobcard;
+use App\Models\MeatCollection;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class FoodCollectionController extends Controller
+class MeatCollectionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,8 +23,8 @@ class FoodCollectionController extends Controller
      */
     public function index()
     {
-        $collections = FoodCollection::latest()->get();
-        return view('food_collections.index', compact('collections'));
+        $collections = MeatCollection::latest()->get();
+        return view('mcollections.index', compact('collections'));
     }
 
     /**
@@ -34,14 +34,17 @@ class FoodCollectionController extends Controller
      */
     public function create()
     {
-        $requests = FoodRequest::where([
-            ['trash', '=', 1],
+        $requests = MeatRequest::where([
+            ['jobcard', '=', null],
             ['status', '=', 'approved'],
             ['issued_on', '=', null]
         ])
+            ->orWhere([
+                ['status', '=', 'approved']
+            ])
             ->get();
 
-        return view('food_collections.create', compact('requests'));
+        return view('mcollections.create', compact('requests'));
     }
 
     /**
@@ -55,7 +58,8 @@ class FoodCollectionController extends Controller
         $validator = Validator::make($request->all(), [
             'paynumber' => 'required',
             'jobcard' => 'required',
-            'frequest' => 'required|unique:food_collections,frequest',
+            'mrequest' => 'required|unique:meat_collections,mrequest',
+            'allocation' => 'required|unique:meat_collections,allocation',
             'issue_date' => 'required',
             'iscollector' => 'required',
             'pin' => 'required',
@@ -67,14 +71,13 @@ class FoodCollectionController extends Controller
 
             try {
 
-                $frequest = FoodRequest::findOrFail($request->paynumber);
+                $mrequest = MeatRequest::findOrFail($request->paynumber);
+                $user = User::where('paynumber', $mrequest->paynumber)->first();
 
-                $user = User::where('paynumber', $frequest->paynumber)->first();
-
-                $collect = new FoodCollection();
+                $collect = new MeatCollection();
                 $collect->paynumber = $user->paynumber;
                 $collect->jobcard = $request->input('jobcard');
-                $collect->frequest = $request->input('frequest');
+                $collect->mrequest = $request->input('mrequest');
                 $collect->allocation = $request->input('allocation');
                 $collect->issue_date = $request->input('issue_date');
 
@@ -100,11 +103,19 @@ class FoodCollectionController extends Controller
                     $collect->status = 1;
 
                     $jobcard = Jobcard::where('card_number', $request->input('jobcard'))->first();
-                    $job_month = $frequest->paynumber . $jobcard->card_month;
+                    $job_month = $mrequest->paynumber . $jobcard->card_month;
 
                     if ($jobcard->remaining > 0) {
                         $jobcard->updated_at = now();
                         $jobcard->issued += 1;
+                        // if ($job_month == $mrequest->allocation)
+                        // {
+                        //     $jobcard->issued += 1;
+
+                        // } else {
+
+                        //     $jobcard->extras_previous += 1;
+                        // }
 
                         $jobcard->remaining -= 1;
                         $jobcard->save();
@@ -113,27 +124,25 @@ class FoodCollectionController extends Controller
                             $collect->save();
 
                             if ($collect->save()) {
-
-                                $frequest->status = "collected";
-                                $frequest->issued_on = now();
-                                $frequest->save();
+                                $mrequest->status = "collected";
+                                $mrequest->issued_on = now();
+                                $mrequest->save();
 
                                 $allocation = Allocation::where('allocation', $request->allocation)->first();
-                                $allocation->food_allocation -= 1;
+                                $allocation->meet_allocation -= 1;
                                 $allocation->status = "collected";
                                 $allocation->save();
 
-                                $user->fcount -= 1;
+                                $user->mcount -= 1;
                                 $user->save();
-
-                                return redirect('fcollections/create')->with('success', 'Collection has been processed successfully');
                             }
+
+                            return redirect('mcollections/create')->with('success', 'Collection has been processed successfully');
                         }
                     } else {
                         return redirect()->back()->with('error', 'Selected jobcard has no remaining units');
                     }
                 } else {
-
                     return redirect()->back()->with('error', 'Invalid pin supplied.');
                 }
             } catch (\Exception $e) {
@@ -145,23 +154,23 @@ class FoodCollectionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\MeatCollection  $meatCollection
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $collection = FoodCollection::findOrFail($id);
+        $collection = MeatCollection::findOrFail($id);
 
-        return view('food_collections.show', compact('collection'));
+        return view('mcollections.show', compact('collection'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\MeatCollection  $meatCollection
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(MeatCollection $meatCollection)
     {
         //
     }
@@ -170,10 +179,10 @@ class FoodCollectionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\MeatCollection  $meatCollection
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, MeatCollection $meatCollection)
     {
         //
     }
@@ -181,26 +190,35 @@ class FoodCollectionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\MeatCollection  $meatCollection
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(MeatCollection $meatCollection)
     {
         //
     }
 
-    public function getFoodRequest($id)
+    public function getRequestType($id)
     {
-        $data = DB::table("food_requests")
+        $type = DB::table("food_requests")
+            ->where("id", $id)
+            ->pluck("type");
+
+        return response()->json($type);
+    }
+
+    public function getMeatRequest($id)
+    {
+        $data = DB::table("meat_requests")
             ->where("id", $id)
             ->pluck("request");
 
         return response()->json($data);
     }
 
-    public function getFoodRequestAllocation($id)
+    public function getMeatRequestAllocation($id)
     {
-        $allocation = DB::table("food_requests")
+        $allocation = DB::table("meat_requests")
             ->where("id", $id)
             ->pluck("allocation");
 
@@ -209,10 +227,10 @@ class FoodCollectionController extends Controller
 
     public function getMeatType($id)
     {
-        $frequest = FoodRequest::findOrFail($id);
+        $mrequest = MeatRequest::findOrFail($id);
 
         $allocation = DB::table('allocations')
-            ->where('allocation', $frequest->allocation)
+            ->where('allocation', $mrequest->allocation)
             ->pluck('meet_a', 'meet_b');
 
         return response()->json($allocation);
@@ -220,7 +238,7 @@ class FoodCollectionController extends Controller
 
     public function getUserBeneficiaries($id)
     {
-        $request = FoodRequest::where('id', $id)->first();
+        $request = MeatRequest::where('id', $id)->first();
 
         $user = User::where('paynumber', $request->paynumber)->first();
 
@@ -230,62 +248,5 @@ class FoodCollectionController extends Controller
             ->pluck('first_name', 'id_number');
 
         return response()->json($beneficiaries);
-    }
-
-    public function getRequestJobcard($id)
-    {
-        $jobcard = DB::table("food_requests")
-            ->where("id", $id)
-            ->pluck("jobcard");
-
-        return response()->json($jobcard);
-    }
-
-    public function deleteUserCollection($id)
-    {
-        $collection  =  FoodCollection::findOrFail($id);
-        $collection_request = $collection->frequest;
-
-        $frequest = FoodRequest::where('request', $collection_request)->first();
-
-        $user = User::where('paynumber', $collection->paynumber)->first();
-
-        $collection->delete();
-
-        if ($collection->delete()) {
-            $frequest->delete();
-
-            if ($frequest->delete()) {
-
-                $month = $frequest->job->card_month;
-                $jobcard_month = $collection->paynumber . $month;
-
-                if ($frequest->allocation == $jobcard_month) {
-                    $frequest->job->issued -= 1;
-                    $frequest->job->remaining += 1;
-                    $frequest->job->save();
-                } else {
-
-                    $frequest->job->extras_previous -= 1;
-                    $frequest->job->remaining += 1;
-                    $frequest->job->save();
-                }
-
-                $user_allocation  = Allocation::where('allocation', $collection->allocation)->first();
-                $user_allocation->food_allocation += 1;
-                $user_allocation->status = "not collected";
-                $user_allocation->save();
-
-                $user->fcount += 1;
-                $user->save();
-
-                if ($user->save()) {
-                    $collection->forceDelete();
-                    $frequest->forceDelete();
-                }
-
-                return redirect()->back()->with('success', 'Collection request has been deleted successfully');
-            }
-        }
     }
 }

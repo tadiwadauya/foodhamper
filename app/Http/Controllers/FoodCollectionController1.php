@@ -37,9 +37,14 @@ class FoodCollectionController extends Controller
         $requests = FoodRequest::where([
             ['trash', '=', 1],
             ['status', '=', 'approved'],
-            ['issued_on', '=', null]
+            ['issued_on', '=', null],
+            ['type', '=', 'food']
         ])
-            ->get();
+            ->orWhere([
+                ['trash', '=', 1],
+                ['status', '=', 'approved'],
+                ['type', '=', 'extra']
+            ])->get();
 
         return view('food_collections.create', compact('requests'));
     }
@@ -75,12 +80,28 @@ class FoodCollectionController extends Controller
                 $collect->paynumber = $user->paynumber;
                 $collect->jobcard = $request->input('jobcard');
                 $collect->frequest = $request->input('frequest');
-                $collect->allocation = $request->input('allocation');
+
+                if ($frequest->type == "food") {
+                    if (!empty($request->allocation)) {
+                        $collect->allocation = $request->input('allocation');
+                    } else {
+
+                        return redirect()->back()->with('error', 'User has no allocation');
+                    }
+                }
+
+                if ($frequest->type == "extra") {
+                    $collect->allocation = "Extra-" . $frequest->id;
+                }
+
                 $collect->issue_date = $request->input('issue_date');
 
                 if ($request->iscollector == 'self') {
                     $collect->self = 1;
                 } else {
+
+                    // other person
+
                     $id_number = $request->collected_by;
 
                     if ($id_number) {
@@ -104,7 +125,16 @@ class FoodCollectionController extends Controller
 
                     if ($jobcard->remaining > 0) {
                         $jobcard->updated_at = now();
+
                         $jobcard->issued += 1;
+                        // if ($job_month == $frequest->allocation)
+                        // {
+                        //     $jobcard->issued += 1;
+
+                        // } else {
+
+                        //     $jobcard->extras_previous += 1;
+                        // }
 
                         $jobcard->remaining -= 1;
                         $jobcard->save();
@@ -118,13 +148,15 @@ class FoodCollectionController extends Controller
                                 $frequest->issued_on = now();
                                 $frequest->save();
 
-                                $allocation = Allocation::where('allocation', $request->allocation)->first();
-                                $allocation->food_allocation -= 1;
-                                $allocation->status = "collected";
-                                $allocation->save();
+                                if ($frequest->type == "food") {
+                                    $allocation = Allocation::where('allocation', $request->allocation)->first();
+                                    $allocation->food_allocation -= 1;
+                                    $allocation->status = "collected";
+                                    $allocation->save();
 
-                                $user->fcount -= 1;
-                                $user->save();
+                                    $user->fcount -= 1;
+                                    $user->save();
+                                }
 
                                 return redirect('fcollections/create')->with('success', 'Collection has been processed successfully');
                             }
