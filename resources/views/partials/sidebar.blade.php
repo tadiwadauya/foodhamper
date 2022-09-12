@@ -141,65 +141,142 @@
                         </ul>
                     </li>
 
-                    <div class="pcoded-navigation-label">Allocations</div>
+                    <div class="pcoded-navigation-label">Food Allocations</div>
 
-                    <li class="pcoded-hasmenu">
-                        <a href="javascript:void(0)" class="waves-effect waves-dark">
-                            <span class="pcoded-micon"><i class="fa fa-calendar"></i></span>
-                            <span class="pcoded-mtext">Allocations</span>
+                <li class="pcoded-hasmenu">
+                    <a
+                    href="javascript:void(0)"
+                    class="waves-effect waves-dark"
+                    >
+                    <span class="pcoded-micon"
+                        ><i class="fa fa-calendar"></i></span>
+                    <span class="pcoded-mtext">Food Allocations</span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                    <li class="">
+                        <a
+                        href="{{ url('allocations/create') }}"
+                        class="waves-effect waves-dark"
+                        >
+                        <span class="pcoded-mtext">Add New</span>
                         </a>
-                        <ul class="pcoded-submenu">
-                            <li class="">
-                                <a href="{{ url('allocations/create') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Add New</span>
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="{{ url('allocations') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Allocations</span>
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="{{ url('import-allocation') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Import Allocation</span>
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="{{ url('deleted-allocations') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Deleted Allocations</span>
-                                </a>
-                            </li>
-                        </ul>
                     </li>
+                    <li class="">
+                        <a
+                        href="{{ url('allocations') }}"
+                        class="waves-effect waves-dark"
+                        >
+                        <span class="pcoded-mtext">Allocations</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a
+                        href="{{ url('import-allocation') }}"
+                        class="waves-effect waves-dark"
+                        >
+                        <span class="pcoded-mtext">Import Allocation</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a
+                        href="{{ url('deleted-allocations') }}"
+                        class="waves-effect waves-dark"
+                        >
+                        <span class="pcoded-mtext">Deleted Allocations</span>
+                        </a>
+                    </li>
+                    </ul>
+                </li>
 
-                    <li class="pcoded-hasmenu">
-                        <a href="javascript:void(0)" class="waves-effect waves-dark">
-                            <span class="pcoded-micon"><i class="fa fa-tasks"></i></span>
-                            <span class="pcoded-mtext">Jobcards</span>
+                <li class="pcoded-hasmenu">
+                    <a
+                    href="javascript:void(0)"
+                    class="waves-effect waves-dark"
+                    >
+                    <span class="pcoded-micon"
+                        ><i class="fa fa-calendar"></i></span>
+                    <span class="pcoded-mtext">Meat Allocations</span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                    <li class="">
+                        <a
+                        href="{{ url('meatallocations/create') }}"
+                        class="waves-effect waves-dark"
+                        >
+                        <span class="pcoded-mtext">Add New</span>
                         </a>
-                        <ul class="pcoded-submenu">
-                            <li class="">
-                                <a href="{{ url('jobcards/create') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Add New</span>
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="{{ url('jobcards') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Manage Jobcards</span>
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="{{ url('get-jobcard-import') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Import Jobcards</span>
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="{{ url('deleted-jobcards') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Deleted</span>
-                                </a>
-                            </li>
-                        </ul>
                     </li>
+                    <li class="">
+                        <a
+                        href="{{ url('meatallocations') }}"
+                        class="waves-effect waves-dark"
+                        >
+                        <span class="pcoded-mtext">Meat Allocations</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a
+                        href="{{ url('import-meatallocation') }}"
+                        class="waves-effect waves-dark"
+                        >
+                        <span class="pcoded-mtext">Import Meat Allocation</span>
+                        </a>
+                    </li>
+                    <li class="">
+                        <a
+                        href="{{ url('deleted-meatallocations') }}"
+                        class="waves-effect waves-dark"
+                        >
+                        <span class="pcoded-mtext">Deleted Meat Allocations</span>
+                        </a>
+                    </li>
+                    </ul>
+                </li>
+
+                <li class="pcoded-hasmenu">
+                    <a
+                        href="javascript:void(0)"
+                        class="waves-effect waves-dark"
+                    >
+                    <span class="pcoded-micon"
+                    ><i class="fa fa-tasks"></i></span>
+                        <span class="pcoded-mtext">Jobcards</span>
+                    </a>
+                    <ul class="pcoded-submenu">
+                        <li class="">
+                            <a
+                                href="{{ url('jobcards/create') }}"
+                                class="waves-effect waves-dark"
+                            >
+                                <span class="pcoded-mtext">Add New</span>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a
+                                href="{{ url('jobcards') }}"
+                                class="waves-effect waves-dark"
+                            >
+                                <span class="pcoded-mtext">Manage Jobcards</span>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a
+                                href="{{ url('get-jobcard-import') }}"
+                                class="waves-effect waves-dark"
+                            >
+                                <span class="pcoded-mtext">Import Jobcards</span>
+                            </a>
+                        </li>
+                        <li class="">
+                            <a
+                                href="{{ url('deleted-jobcards') }}"
+                                class="waves-effect waves-dark"
+                            >
+                                <span class="pcoded-mtext">Deleted</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
 
                     <div class="pcoded-navigation-label">Food Requests</div>
 
