@@ -63,7 +63,6 @@
                                                     <th>Requested On</th>
                                                     <th>Issued On</th>
                                                     <th>Status</th>
-                                                    <th>Request Type</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -113,7 +112,6 @@
                                                                 <span
                                                                     class="badge badge-{{ $badgeClass }}">{{ $mrequest->status }}</span>
                                                             </td>
-                                                            <td>{{ $mrequest->type }}</td>
                                                             <td style="white-space: nowrap;width:20%;">
                                                                 <a href="{{ url('approve-meat-request/' . $mrequest->id) }}"
                                                                     data-toggle="tooltip" title="Approve Request"
@@ -121,7 +119,7 @@
                                                                         class="fa fa-pencil"></i></a>
                                                                 <a href="{{ url('reject-request/' . $mrequest->id) }}"
                                                                     data-toggle="tooltip" title="Reject Request"
-                                                                    class="d-inline btn btn-success btn-sm">x</a>
+                                                                    class="d-inline btn btn-success btn-sm"><i class="fa fa-thumbs-down"></i></a>
                                                                 <form method="POST"
                                                                     action="{{ route('mrequests.destroy', $mrequest->id) }}"
                                                                     class="d-inline">

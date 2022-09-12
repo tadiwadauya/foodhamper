@@ -163,17 +163,6 @@
                                                         </span>
                                                     @enderror
                                                 </div>
-                                                <div class="col-lg-6">
-                                                    <label for="type">Request Type *</label>
-                                                    <input type="text" name="type" id="type" class="form-control"
-                                                        placeholder="Food Humber">
-
-                                                    @error('type')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong> {{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
                                             </div>
 
                                             <div class="row mb-4 mb-2">
@@ -320,24 +309,6 @@
 
                     $.ajax({
                         type: "get",
-                        url: "/get-request-type/" + id,
-                        _token: _token,
-                        success: function(res) {
-                            if (res) {
-                                $("#type").empty();
-                                $.each(res, function(key, value) {
-
-                                    $("#type").val(value);
-                                });
-
-                            }
-                            onchange
-                        }
-
-                    });
-
-                    $.ajax({
-                        type: "get",
                         url: "/getuserbeneficiaries/" + id,
                         _token: _token,
                         success: function(res) {
@@ -373,23 +344,7 @@
                 placeholder: 'Please select employee beneficiary',
             });
         });
-    </script>
-    {{-- <script>
-        var paynumber = document.getElementById('paynumber');
 
-        const getFoodrequest = async () => {
-            await axios.get("/get-food-request/" + paynumber).then((response) => {
-                frequest = response.data;
-                console.log(frequest);
-            });
-        }
-        paynumber.addEventListener('change', getFoodrequest)
-
-        function populateFields() {
-
-        }
-    </script> --}}
-    <script>
         function showDiv(divId, element) {
             document.getElementById(divId).style.display = element.value == 'other' ? 'block' : 'none';
         }

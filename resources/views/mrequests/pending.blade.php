@@ -96,7 +96,7 @@
                                                                         class="fa fa-pencil"></i></a>
                                                                 <a href="{{ url('reject-request/' . $mrequest->id) }}"
                                                                     data-toggle="tooltip" title="Reject Request"
-                                                                    class="d-inline btn btn-success btn-sm">x</a>
+                                                                    class="d-inline btn btn-success btn-sm"><i class="fa fa-thumbs-down"></i></a>
                                                                 <form method="POST" action="" class="d-inline">
                                                                     @csrf
                                                                     @method('DELETE')

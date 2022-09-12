@@ -163,23 +163,7 @@
                                                         </span>
                                                     @enderror
                                                 </div>
-
                                             </div>
-
-                                            {{-- <div class="row mb-4 mb-4">
-                                                <div class="col-lg-12">
-                                                    <label for="type">Request Type *</label>
-                                                    <input type="text" name="type" id="type" class="form-control"
-                                                        placeholder="Meat Humber">
-
-                                                    @error('type')
-                                                        <span class="invalid-feedback" role="alert">
-                                                            <strong> {{ $message }}</strong>
-                                                        </span>
-                                                    @enderror
-                                                </div>
-                                            </div> --}}
-
                                             <div class="row mb-4 mb-4">
                                                 <div class="col-lg-12">
                                                     <label for="mtype">Meat Type *</label>
@@ -345,23 +329,6 @@
                         }
 
                     });
-
-                    // $.ajax({
-                    //     type: "get",
-                    //     url: "/get-request-type/" + id,
-                    //     _token: _token,
-                    //     success: function(res) {
-                    //         if (res) {
-                    //             $("#type").empty();
-                    //             $.each(res, function(key, value) {
-
-                    //                 $("#type").val(value);
-                    //             });
-
-                    //         }
-                    //     }
-
-                    // });
 
                     $.ajax({
                         type: "get",

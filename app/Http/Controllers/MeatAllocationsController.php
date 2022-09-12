@@ -19,7 +19,7 @@ class MeatAllocationsController extends Controller
     public function index()
     {
         $meatallocations = MeatAllocation::orderBy('created_at', 'desc')->get();
-        return view('meatallocations.index',compact('meatallocations'));
+        return view('meatallocations.index', compact('meatallocations'));
     }
 
     /**
@@ -29,8 +29,8 @@ class MeatAllocationsController extends Controller
      */
     public function create()
     {
-        $users = User::where('activated',1)->get();
-        return view('meatallocations.create',compact('users'));
+        $users = User::where('activated', 1)->get();
+        return view('meatallocations.create', compact('users'));
     }
 
     /**
@@ -49,27 +49,25 @@ class MeatAllocationsController extends Controller
             'meatallocation' => 'required',
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
-        }
-        else {
+        } else {
 
             try {
-                $user = User::where('paynumber',$request->paynumber)->first();
+                $user = User::where('paynumber', $request->paynumber)->first();
 
                 if ($user->activated == 1) {
 
                     $meatallocations = $user->meatallocations;
 
-                    if ($meatallocations == 0)
-                    {
-                        $create_alloc = $request->paynumber.$request->input('meatallocation');
+                    if ($meatallocations == 0) {
+                        $create_alloc = $request->paynumber . $request->input('meatallocation');
 
                         try {
 
                             $meatallocation = MeatAllocation::create([
                                 'paynumber' => $request->input('paynumber'),
-                                'meatallocation' => $create_alloc ,
+                                'meatallocation' => $create_alloc,
                                 'meat_a' => $request->input('meat_a'),
                                 'meat_b' => $request->input('meat_b'),
                                 'meat_allocation' => 1,
@@ -78,32 +76,27 @@ class MeatAllocationsController extends Controller
 
                             $meatallocation->save();
 
-                            if ($meatallocation->save())
-                            {
+                            if ($meatallocation->save()) {
                                 $meatallocation->user->mcount += 1;
                                 $meatallocation->user->save();
 
-                                return redirect('meatallocations')->with('success','User has been allocated successfully');
+                                return redirect('meatallocations')->with('success', 'User has been allocated successfully');
                             }
-
-                        } catch (\Exception $e)
-                        {
-                            echo 'Error'.$e;
+                        } catch (\Exception $e) {
+                            echo 'Error' . $e;
                         }
-
                     } else {
 
                         // previous allocation
                         $user = Auth::user();
-                        $create_alloc = $request->paynumber.$request->input('meatallocation');
+                        $create_alloc = $request->paynumber . $request->input('meatallocation');
 
                         try {
 
-                            if ($user->hasRole('admin'))
-                            {
+                            if ($user->hasRole('admin')) {
                                 $meatallocation = MeatAllocation::create([
                                     'paynumber' => $request->input('paynumber'),
-                                    'meatallocation' => $create_alloc ,
+                                    'meatallocation' => $create_alloc,
                                     'meat_a' => $request->input('meat_a'),
                                     'meat_b' => $request->input('meat_b'),
                                     'meat_allocation' => 1,
@@ -111,33 +104,25 @@ class MeatAllocationsController extends Controller
                                 ]);
                                 $meatallocation->save();
 
-                                if ($meatallocation->save())
-                                {
+                                if ($meatallocation->save()) {
 
                                     $meatallocation->user->mcount += 1;
                                     $meatallocation->user->save();
 
-                                    return redirect('meatallocations')->with('success','Previous meat allocation has been created successfully.');
+                                    return redirect('meatallocations')->with('success', 'Previous meat allocation has been created successfully.');
                                 }
                             }
-
                         } catch (\Exception $e) {
-                            echo "Error - ".$e;
+                            echo "Error - " . $e;
                         }
                     }
-
+                } else {
+                    return redirect()->back()->with('warning', 'User is not activated.');
                 }
-                else {
-                    return redirect()->back()->with('warning','User is not activated.');
-                }
-
             } catch (\Exception $th) {
-                echo "Error - ".$th;
+                echo "Error - " . $th;
             }
-
-
         }
-
     }
 
     /**
@@ -148,7 +133,7 @@ class MeatAllocationsController extends Controller
      */
     public function show(MeatAllocation $meatallocation)
     {
-        return view('meatallocations.show',compact('meatallocation'));
+        return view('meatallocations.show', compact('meatallocation'));
     }
 
     /**
@@ -159,7 +144,7 @@ class MeatAllocationsController extends Controller
      */
     public function edit(MeatAllocation $meatallocation)
     {
-        return view('meatallocations.edit',compact('meatallocation'));
+        return view('meatallocations.edit', compact('meatallocation'));
     }
 
     /**
@@ -176,7 +161,7 @@ class MeatAllocationsController extends Controller
             'meat_b' => 'required',
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
         }
 
@@ -184,7 +169,7 @@ class MeatAllocationsController extends Controller
         $meatallocation->meat_b = $request->input('meat_b');
         $meatallocation->save();
 
-        return redirect('meatallocations')->with('success','meat Allocation has been updated successfully');
+        return redirect('meatallocations')->with('success', 'meat Allocation has been updated successfully');
     }
 
     /**
@@ -200,42 +185,41 @@ class MeatAllocationsController extends Controller
         // check the allocation status
         $status = $meatallocation->status;
 
-        if ($status == 'not collected')
-        {
+        if ($status == 'not collected') {
             $deleted = $meatallocation->delete();
 
-            if ($deleted)
-            {
+            if ($deleted) {
                 $meatallocation->user->mcount -= 1;
                 $meatallocation->user->save();
 
-                return redirect('meatallocations')->with('success','meat Allocation has been deleted successfully');
+                return redirect('meatallocations')->with('success', 'meat Allocation has been deleted successfully');
             }
-        }else
-        {
-            return redirect()->back()->with('error','meat Allocation has already been issued.');
+        } else {
+            return redirect()->back()->with('error', 'meat Allocation has already been issued.');
         }
 
-        return redirect('meatallocations')->with('success','meat Allocation has been deleted Successfully');
+        return redirect('meatallocations')->with('success', 'meat Allocation has been deleted Successfully');
     }
 
     public function getName($paynumber)
     {
         $name = DB::table("users")
-          ->where("paynumber",$paynumber)
-          ->pluck("user_id");
+            ->where("paynumber", $paynumber)
+            ->pluck("user_id");
 
         return response()->json($name);
     }
 
-    public function meatallocationImportForm() {
+    public function meatallocationImportForm()
+    {
 
         return view('meatallocations.import');
     }
 
-    public function meatallocationImportSend(Request $request) {
+    public function meatallocationImportSend(Request $request)
+    {
 
-        $validator = Validator::make($request->all(),[
+        $validator = Validator::make($request->all(), [
             'meatallocation' => 'required',
 
         ]);
@@ -244,7 +228,7 @@ class MeatAllocationsController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
-        Excel::import(new AllocationsImport,request()->file('meatallocation'));
+        Excel::import(new AllocationsImport, request()->file('meatallocation'));
 
         return redirect('meatallocations')->with('Data has been imported successfully');
     }
@@ -259,15 +243,14 @@ class MeatAllocationsController extends Controller
 
                 $month_allocation = date('FY');
 
-                if($user->meatallocation) {
+                if ($user->meatallocation) {
                     // check if user has been allocated for that month
-                    $allocation_user = MeatAllocation::where('meatallocation',$month_allocation)
-                        ->where('paynumber',$user->paynumber)
+                    $allocation_user = MeatAllocation::where('meatallocation', $month_allocation)
+                        ->where('paynumber', $user->paynumber)
                         ->latest()->first();
 
-                    if (!$allocation_user )
-                    {
-                        $last_month = DB::table('meatallocations')->where('paynumber',$user->paynumber)->orderByDesc('id')->first();
+                    if (!$allocation_user) {
+                        $last_month = DB::table('meatallocations')->where('paynumber', $user->paynumber)->orderByDesc('id')->first();
 
                         $meatallocation = MeatAllocation::create([
                             'meatallocation' => $month_allocation,
@@ -280,7 +263,7 @@ class MeatAllocationsController extends Controller
 
                         if ($meatallocation->save()) {
 
-                            $meatallocation->user->mcount +=1;
+                            $meatallocation->user->mcount += 1;
                             $meatallocation->user->save();
                         }
                     } else {
@@ -290,34 +273,36 @@ class MeatAllocationsController extends Controller
             }
         }
 
-        return redirect('meatallocations')->with('success','Users has been allocated Successfully');
+        return redirect('meatallocations')->with('success', 'Users has been allocated Successfully');
     }
 
     public function getDepartmentalUsers($department)
     {
-        if($department == "department") {
+        if ($department == "department") {
             $name = DB::table("departments")
-            ->where('id','>=',0)
-            ->pluck("department");
+                ->where('id', '>=', 0)
+                ->pluck("department");
             return response()->json($name);
         }
 
-        if( $department == "etype") {
+        if ($department == "etype") {
 
             $name = DB::table("usertypes")
-            ->where('id','>=',0)
-            ->pluck("type");
+                ->where('id', '>=', 0)
+                ->pluck("type");
             return response()->json($name);
         }
-
     }
 
-    public function getAllocation($paynumber) {
+    public function getAllocation($paynumber)
+    {
 
-        $meatallocation = MeatAllocation::where('paynumber',$paynumber)
-                    ->where('meat_allocation','>',0)
-                    ->where('deleted_at','=',null)
-                    ->pluck('meatallocation');
+        $meatallocation = MeatAllocation::where('paynumber', $paynumber)
+            ->where([
+                ['meat_allocation', '>', 0],
+                ['deleted_at', '=', null],
+                ['status', '=', 'not collected'],
+            ])->pluck('meatallocation');
 
         return response()->json($meatallocation);
     }
@@ -328,6 +313,4 @@ class MeatAllocationsController extends Controller
 
         return response()->download($myFile);
     }
-
 }
-

@@ -6,6 +6,7 @@ use App\Models\Allocation;
 use App\Models\Beneficiary;
 use App\Models\MeatRequest;
 use App\Models\Jobcard;
+use App\Models\MeatAllocation;
 use App\Models\MeatCollection;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -114,11 +115,12 @@ class MeatCollectionController extends Controller
 
                             if ($collect->save()) {
                                 $mrequest->status = "collected";
+                                $mrequest->jobcard = $jobcard->card_number;
                                 $mrequest->issued_on = now();
                                 $mrequest->save();
 
-                                $allocation = Allocation::where('allocation', $request->allocation)->first();
-                                $allocation->meet_allocation -= 1;
+                                $allocation = MeatAllocation::where('meatallocation', $request->allocation)->first();
+                                $allocation->meat_allocation -= 1;
                                 $allocation->status = "collected";
                                 $allocation->save();
 
@@ -218,9 +220,9 @@ class MeatCollectionController extends Controller
     {
         $mrequest = MeatRequest::findOrFail($id);
 
-        $allocation = DB::table('allocations')
-            ->where('allocation', $mrequest->allocation)
-            ->pluck('meet_a', 'meet_b');
+        $allocation = DB::table('meat_allocations')
+            ->where('meatallocation', $mrequest->allocation)
+            ->pluck('meat_a', 'meat_b');
 
         return response()->json($allocation);
     }

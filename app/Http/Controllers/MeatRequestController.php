@@ -211,7 +211,7 @@ class MeatRequestController extends Controller
             $request->updated_at = now();
             $request->save();
 
-            return redirect('pending-requests')->with('success', 'Request has been approved successfully');
+            return redirect()->back()->with('success', 'Request has been approved successfully');
         } else {
             return redirect()->back()->with("error", "Selected user is not active.");
         }
