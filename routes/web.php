@@ -30,6 +30,7 @@ Route::group(['middleware' => ['web', 'activity']], function () {
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/create-user-request', 'App\Http\Controllers\UserController@createRequest');
+    Route::get('/create-user-mrequest', 'App\Http\Controllers\UserController@createMRequest');
 });
 
 // admin routes
@@ -230,4 +231,7 @@ Route::group(['middleware' => ['auth', 'activated', 'web', 'activity']], functio
     Route::get('/getusername/meat/{paynumber}', 'App\Http\Controllers\MeatRequestController@getUsername');
     Route::get('/approve-meat-request/{id}', 'App\Http\Controllers\MeatRequestController@approveRequest')->middleware('manageradmin');
     Route::get('/reject-meat-request/{id}', 'App\Http\Controllers\MeatRequestController@rejectRequest')->middleware('manageradmin');
+
+    Route::get('my-user-mallocation', 'App\Http\Controllers\UserController@mymeatAllocations');
+    Route::get('my-user-mrequests', 'App\Http\Controllers\UserController@mymeatRequets');
 });

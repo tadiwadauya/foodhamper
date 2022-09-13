@@ -494,19 +494,27 @@
                         <ul class="pcoded-submenu">
                             <li class="">
                                 <a href="{{ url('my-user-allocation') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">My Allocations</span>
+                                    <span class="pcoded-mtext">My Fooad Allocations</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                        <ul class="pcoded-submenu">
+                            <li class="">
+                                <a href="{{ url('my-user-allocation') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">My Meat Allocations</span>
                                 </a>
                             </li>
 
                         </ul>
                     </li>
 
-                    <div class="pcoded-navigation-label"> My Requests</div>
+                    <div class="pcoded-navigation-label"> My Food Requests</div>
 
                     <li class="pcoded-hasmenu">
                         <a href="javascript:void(0)" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="fa fa-file-excel-o"></i></span>
-                            <span class="pcoded-mtext">Humber Requests</span>
+                            <span class="pcoded-mtext">Food Requests</span>
                         </a>
                         <ul class="pcoded-submenu">
                             <li class="">
@@ -522,6 +530,32 @@
 
                         </ul>
                     </li>
+
+
+
+                    <li class="pcoded-hasmenu">
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="fa fa-file-excel-o"></i></span>
+                            <span class="pcoded-mtext"> Meat Requests</span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="">
+                                <a href="{{ url('/create-user-mrequest') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Create Request</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="{{ url('/my-user-mrequests') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">All Requests</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+
+
+
                 @endrole
 
                 @role('hamperissuer')
