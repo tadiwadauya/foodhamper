@@ -12,8 +12,8 @@
             <div class="col-lg-8">
                 <div class="page-header-title">
                     <div class="d-inline">
-                        <h5>Requested Hampers</h5>
-                        <span class="pcoded-mtext"> Overview of Requested food Hampers</span>
+                        <h5>Requested Meat Hampers</h5>
+                        <span class="pcoded-mtext"> Overview of Requested Meat Hampers</span>
                     </div>
                 </div>
             </div>
@@ -107,7 +107,7 @@
                                                                         $badgeClass = 'danger';
                                                                     @endphp
                                                                 @else
-                                                                    @php $badgeClass = 'default' @endphp
+                                                                    @php $badgeClass = 'primary' @endphp
                                                                 @endif
                                                                 <span
                                                                     class="badge badge-{{ $badgeClass }}">{{ $mrequest->status }}</span>
@@ -116,10 +116,11 @@
                                                                 <a href="{{ url('approve-meat-request/' . $mrequest->id) }}"
                                                                     data-toggle="tooltip" title="Approve Request"
                                                                     class="d-inline btn btn-sm btn-primary"><i
-                                                                        class="fa fa-pencil"></i></a>
+                                                                        class="fa fa-thumbs-up"></i></a>
                                                                 <a href="{{ url('reject-request/' . $mrequest->id) }}"
                                                                     data-toggle="tooltip" title="Reject Request"
-                                                                    class="d-inline btn btn-success btn-sm"><i class="fa fa-thumbs-down"></i></a>
+                                                                    class="d-inline btn btn-success btn-sm"><i
+                                                                        class="fa fa-thumbs-down"></i></a>
                                                                 <form method="POST"
                                                                     action="{{ route('mrequests.destroy', $mrequest->id) }}"
                                                                     class="d-inline">

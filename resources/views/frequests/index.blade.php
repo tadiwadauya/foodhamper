@@ -12,8 +12,8 @@ a@extends('layouts.app')
             <div class="col-lg-8">
                 <div class="page-header-title">
                     <div class="d-inline">
-                        <h5>Requested Hampers</h5>
-                        <span class="pcoded-mtext"> Overview Of Requested food Hampers</span>
+                        <h5>Requested Food Hampers</h5>
+                        <span class="pcoded-mtext"> Overview Of Requested Food Hampers</span>
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@ a@extends('layouts.app')
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header" style="margin-bottom: 0;padding-bottom:0;">
-                                    <h4 style="font-size:16px;margin-bottom:0;">Showing all Hampers distributed
+                                    <h4 style="font-size:16px;margin-bottom:0;">Showing All Food Hampers Distributed
                                         <span class="float-right mr-2"><a href="{{ url('delete_unattended_requests') }}"
                                                 class="btn btn-danger btn-sm btn-round"><i class="fa fa-trash-o"></i>Delete
                                                 Requests</a></span>
@@ -63,7 +63,6 @@ a@extends('layouts.app')
                                                     <th>Requested On</th>
                                                     <th>Issued On</th>
                                                     <th>Status</th>
-                                                    <th>Request Type</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -113,7 +112,6 @@ a@extends('layouts.app')
                                                                 <span
                                                                     class="badge badge-{{ $badgeClass }}">{{ $frequest->status }}</span>
                                                             </td>
-                                                            <td>{{ $frequest->type }}</td>
                                                             <td style="white-space: nowrap;width:20%;">
                                                                 <a href="{{ url('approve-request/' . $frequest->id) }}"
                                                                     data-toggle="tooltip" title="Approve Request"

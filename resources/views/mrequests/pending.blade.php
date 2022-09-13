@@ -13,7 +13,7 @@
                 <div class="page-header-title">
                     <div class="d-inline">
                         <h5>Requested Meat Humbers</h5>
-                        <span class="pcoded-mtext"> Overview Of Pending Requests</span>
+                        <span class="pcoded-mtext"> Overview Of Pending Meat Requests</span>
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header" style="margin-bottom: 0;padding-bottom:0;">
-                                    <h4 style="font-size:16px;margin-bottom:0;">Showing All Pending Requests
+                                    <h4 style="font-size:16px;margin-bottom:0;">Showing All Pending Meat Requests
                                         <span class="float-right mr-2"><a href="{{ url('delete_pending_requests') }}"
                                                 class="btn btn-danger btn-sm btn-round"><i class="fa fa-trash-o"></i>Delete
                                                 Requests</a></span>
@@ -84,7 +84,7 @@
                                                                         $badgeClass = 'danger';
                                                                     @endphp
                                                                 @else
-                                                                    @php $badgeClass = 'default' @endphp
+                                                                    @php $badgeClass = 'primary' @endphp
                                                                 @endif
                                                                 <span
                                                                     class="badge badge-{{ $badgeClass }}">{{ $mrequest->status }}</span>
@@ -93,10 +93,11 @@
                                                                 <a href="{{ url('approve-meat-request/' . $mrequest->id) }}"
                                                                     data-toggle="tooltip" title="Approve Request"
                                                                     class="d-inline btn btn-sm btn-primary"><i
-                                                                        class="fa fa-pencil"></i></a>
+                                                                        class="fa fa-thumbs-up"></i></a>
                                                                 <a href="{{ url('reject-request/' . $mrequest->id) }}"
                                                                     data-toggle="tooltip" title="Reject Request"
-                                                                    class="d-inline btn btn-success btn-sm"><i class="fa fa-thumbs-down"></i></a>
+                                                                    class="d-inline btn btn-success btn-sm"><i
+                                                                        class="fa fa-thumbs-down"></i></a>
                                                                 <form method="POST" action="" class="d-inline">
                                                                     @csrf
                                                                     @method('DELETE')

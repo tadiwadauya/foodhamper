@@ -12,8 +12,8 @@
             <div class="col-lg-8">
                 <div class="page-header-title">
                     <div class="d-inline">
-                        <h5>Requested Humbers</h5>
-                        <span class="pcoded-mtext"> Overview of Collected Requests</span>
+                        <h5>Requested Meat Hampers</h5>
+                        <span class="pcoded-mtext"> Overview of Collected Meat Requests</span>
                     </div>
                 </div>
             </div>
@@ -24,7 +24,7 @@
                             <a href="{{ url('/home') }}"><i class="feather icon-home"></i></a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="{{ url('mrequests') }}">Food Requests</a>
+                            <a href="{{ url('mrequests') }}">Meat Requests</a>
                         </li>
                         <li class="breadcrumb-item">
                             <a href="{{ url('mrequests/create') }}">Add New</a>
@@ -43,7 +43,7 @@
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header" style="margin-bottom: 0;padding-bottom:0;">
-                                    <h4 style="font-size:16px;margin-bottom:0;">Showing all collected requests</h4>
+                                    <h4 style="font-size:16px;margin-bottom:0;">Showing All Collected Meat Requests</h4>
                                 </div>
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">

@@ -12,8 +12,8 @@
             <div class="col-lg-8">
                 <div class="page-header-title">
                     <div class="d-inline">
-                        <h5>Food Distribution</h5>
-                        <span class="pcoded-mtext"> Food humber distribution overview</span>
+                        <h5>Meat Distribution</h5>
+                        <span class="pcoded-mtext"> Meat Hamper Distribution Overview</span>
                     </div>
                 </div>
             </div>
@@ -24,7 +24,7 @@
                             <a href="index.html"><i class="feather icon-home"></i></a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="{{ url('mrequests') }}">Fdistribution</a>
+                            <a href="{{ url('mrequests') }}">Mdistribution</a>
                         </li>
                         <li class="breadcrumb-item">
                             <a href="{{ url('mrequests/create') }}">Add New</a>
@@ -43,7 +43,7 @@
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header" style="margin-bottom: 0;padding-bottom:0;">
-                                    <h4 style="font-size:16px;margin-bottom:0;">Showing all humbers distributed</h4>
+                                    <h4 style="font-size:16px;margin-bottom:0;">Showing All Meat Hampers Distributed</h4>
                                 </div>
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
@@ -85,7 +85,7 @@
                                                                         $badgeClass = 'danger';
                                                                     @endphp
                                                                 @else
-                                                                    @php $badgeClass = 'default' @endphp
+                                                                    @php $badgeClass = 'primary' @endphp
                                                                 @endif
                                                                 <span
                                                                     class="badge badge-{{ $badgeClass }}">{{ $frequest->status }}</span>

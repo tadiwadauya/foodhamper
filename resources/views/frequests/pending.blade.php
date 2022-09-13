@@ -12,8 +12,8 @@
             <div class="col-lg-8">
                 <div class="page-header-title">
                     <div class="d-inline">
-                        <h5>Requested Humbers</h5>
-                        <span class="pcoded-mtext"> Overview of Pending Requests</span>
+                        <h5>Requested Food Hampers</h5>
+                        <span class="pcoded-mtext"> Overview of Pending Food Requests</span>
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@
                         <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header" style="margin-bottom: 0;padding-bottom:0;">
-                                    <h4 style="font-size:16px;margin-bottom:0;">Showing all pending requests
+                                    <h4 style="font-size:16px;margin-bottom:0;">Showing All Pending Food Requests
                                         <span class="float-right mr-2"><a href="{{ url('delete_pending_requests') }}"
                                                 class="btn btn-danger btn-sm btn-round"><i class="fa fa-trash-o"></i>Delete
                                                 Requests</a></span>
@@ -59,7 +59,6 @@
                                                     <th>Done By</th>
                                                     <th>Requested On</th>
                                                     <th>Status</th>
-                                                    <th>Req Type</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -90,7 +89,6 @@
                                                                 <span
                                                                     class="badge badge-{{ $badgeClass }}">{{ $frequest->status }}</span>
                                                             </td>
-                                                            <td>{{ $frequest->type }}</td>
                                                             <td style="white-space: nowrap;width:20%;">
                                                                 <a href="{{ url('approve-request/' . $frequest->id) }}"
                                                                     data-toggle="tooltip" title="Approve Request"
