@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Allocation;
 use App\Models\FoodCollection;
 use App\Models\HumberSetting;
 use App\Models\Jobcard;
+use App\Models\MeatAllocation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -60,13 +62,12 @@ public function index()
 
         if ($user->hasRole('user'))
         {
-            $food_count = $user->fcount;
-            $meat_count = $user->mcount;
-            $settings = HumberSetting::where('id',1)->first();
+            $user = Auth::user();
+            $meatallocations = MeatAllocation::where('paynumber', $user->paynumber)->latest()->get();
+            $allocations = Allocation::where('paynumber', $user->paynumber)->latest()->get();
+            // $settings = HumberSetting::where('id',1)->first();
 
-            $fcollections = FoodCollection::where('paynumber',$user->paynumber)->get();
-
-            return view('pages.user.home',compact('settings','fcollections','food_count','meat_count'));
+            return view('pages.user.home',compact('meatallocations','allocations'));
         }
 
         if ($user->hasRole('hamperissuer'))

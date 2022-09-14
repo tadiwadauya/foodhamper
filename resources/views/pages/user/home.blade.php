@@ -49,7 +49,7 @@
                                         <div class="col">
                                             <h6 class="m-b-5 text-white">Food Humber</h6>
                                             <h3 class="m-b-0 f-w-700 text-white">
-                                                {{ $food_count }}
+
                                             </h3>
                                         </div>
                                         <div class="col-auto">
@@ -62,14 +62,14 @@
                                     "></i>
                                         </div>
                                     </div>
-                                    <p class="m-b-0 text-white">
+                                    {{-- <p class="m-b-0 text-white">
 
                                         @if ($settings->food_available == 0)
                                             Not Available
                                         @else
                                             Available for Collection
                                         @endif
-                                    </p>
+                                    </p> --}}
                                 </div>
                             </div>
                         </div>
@@ -80,21 +80,21 @@
                                         <div class="col">
                                             <h6 class="m-b-5 text-white">Meat Humber</h6>
                                             <h3 class="m-b-0 f-w-700 text-white">
-                                                {{ $meat_count }}
+
                                             </h3>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-database text-c-blue f-18"></i>
                                         </div>
                                     </div>
-                                    <p class="m-b-0 text-white">
+                                    {{-- <p class="m-b-0 text-white">
 
                                         @if ($settings->meat_available == 0)
                                             Not Available
                                         @else
                                             Available for Collection
                                         @endif
-                                    </p>
+                                    </p> --}}
                                 </div>
                             </div>
                         </div>
@@ -102,28 +102,48 @@
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-header" style="margin-bottom: 0;padding-bottom:0;">
-                                    <h4 style="font-size:16px;margin-bottom:0;font-weight: bold;">Recently collected food
-                                        allocations</h4>
+                                    <h4 style="font-size:16px;margin-bottom:0;font-weight: bold;">Recent Food Allocations</h4>
                                 </div>
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
                                         <table id="basic-btn" class="table table-bordered nowrap">
                                             <thead>
                                                 <tr>
-                                                    <th>ID</th>
-                                                    <th>Date Collected</th>
+                                                    <th>Id</th>
+                                                    <th>Name</th>
                                                     <th>Allocation</th>
-                                                    <th>Allocation Type</th>
+                                                    <th>Food Balance</th>
+                                                    <th>Status</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @if ($fcollections)
-                                                    @foreach ($fcollections as $collection)
+                                                @if ($allocations)
+                                                    @foreach ($allocations as $allocation)
                                                         <tr>
-                                                            <td>{{ $collection->id }}</td>
-                                                            <td>{{ $collection->id }}</td>
-                                                            <td>{{ $collection->id }}</td>
-                                                            <td>{{ $collection->id }}</td>
+                                                            <td>{{ $allocation->id }}</td>
+                                                            <td>{{ $allocation->user->full_name }}</td>
+                                                            <td>{{ $allocation->allocation }}</td>
+                                                            <td>{{ $allocation->food_allocation }}</td>
+                                                            <td>
+                                                                @if ($allocation->status == 'not collected')
+                                                                    @php
+                                                                        $badgeClass = 'success';
+                                                                    @endphp
+                                                                @elseif($allocation->status == 'partial')
+                                                                    @php
+                                                                        $badgeClass = 'warning';
+                                                                    @endphp
+                                                                @elseif($allocation->status == 'collected')
+                                                                    @php
+                                                                        $badgeClass = 'danger';
+                                                                    @endphp
+                                                                @else
+                                                                    @php $badgeClass = 'default' @endphp
+                                                                @endif
+                                                                <span
+                                                                    class="badge badge-{{ $badgeClass }}">{{ $allocation->status }}</span>
+
+                                                            </td>
                                                         </tr>
                                                     @endforeach
                                                 @endif

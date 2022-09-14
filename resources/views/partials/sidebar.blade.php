@@ -14,132 +14,6 @@
                     </li>
 
 
-                    <div class="pcoded-navigation-label">Users</div>
-
-                    <li class="pcoded-hasmenu">
-                        <a href="javascript:void(0)" class="waves-effect waves-dark">
-                            <span class="pcoded-micon"><i class="fa fa-users"></i></span>
-                            <span class="pcoded-mtext">Users</span>
-                        </a>
-                        <ul class="pcoded-submenu">
-                            <li class="">
-                                <a href="{{ url('users/create') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Add New</span>
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="{{ url('users') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Manage Users</span>
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="{{ url('deleted-users') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Deleted Users</span>
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="{{ url('terminate-user-form') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Terminate User</span>
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="{{ url('reset-pin') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Reset Pin</span>
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="{{ url('get-users-import') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Import Users</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="pcoded-hasmenu">
-                        <a href="javascript:void(0)" class="waves-effect waves-dark">
-                            <span class="pcoded-micon"><i class="fa fa-users"></i></span>
-                            <span class="pcoded-mtext">Beneficiaries</span>
-                        </a>
-                        <ul class="pcoded-submenu">
-                            <li class="">
-                                <a href="{{ url('beneficiaries/create') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Add New</span>
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="{{ url('beneficiaries') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Manage Beneficiaries</span>
-                                </a>
-                            </li>
-
-                            <li class="">
-                                <a href="{{ url('assign-beneficiary') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Assign Beneficiary</span>
-                                </a>
-                            </li>
-
-                            <li class="">
-                                <a href="{{ url('import-beneficiary') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Import Beneficiary</span>
-                                </a>
-                            </li>
-
-                            <li class="">
-                                <a href="{{ url('all-employee-beneficiaries') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Employee Beneficiaries</span>
-                                </a>
-                            </li>
-
-                        </ul>
-                    </li>
-
-                    <li class="pcoded-hasmenu">
-                        <a href="javascript:void(0)" class="waves-effect waves-dark">
-                            <span class="pcoded-micon"><i class="fa fa-th-large"></i></span>
-                            <span class="pcoded-mtext">Departments</span>
-                        </a>
-                        <ul class="pcoded-submenu">
-                            <li class="">
-                                <a href="{{ url('departments/create') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Add New</span>
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="{{ url('assign-manager') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Assign Manager</span>
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="{{ url('departments') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Manage Departments</span>
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="{{ url('get-department-import') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Import Departments</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li class="pcoded-hasmenu">
-                        <a href="javascript:void(0)" class="waves-effect waves-dark">
-                            <span class="pcoded-micon"><i class="fa fa-user"></i></span>
-                            <span class="pcoded-mtext">Employee Types</span>
-                        </a>
-                        <ul class="pcoded-submenu">
-                            <li class="">
-                                <a href="{{ url('usertypes/create') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Add New</span>
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="{{ url('usertypes') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Manage Employees</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
 
                     <div class="pcoded-navigation-label">Food Allocations</div>
 
@@ -422,6 +296,133 @@
                                 </ul>
                             </li>
 
+                        </ul>
+                    </li>
+
+                    <div class="pcoded-navigation-label">Users</div>
+
+                    <li class="pcoded-hasmenu">
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="fa fa-users"></i></span>
+                            <span class="pcoded-mtext">Users</span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="">
+                                <a href="{{ url('users/create') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Add New</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="{{ url('users') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Manage Users</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="{{ url('deleted-users') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Deleted Users</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="{{ url('terminate-user-form') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Terminate User</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="{{ url('reset-pin') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Reset Pin</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="{{ url('get-users-import') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Import Users</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="pcoded-hasmenu">
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="fa fa-users"></i></span>
+                            <span class="pcoded-mtext">Beneficiaries</span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="">
+                                <a href="{{ url('beneficiaries/create') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Add New</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="{{ url('beneficiaries') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Manage Beneficiaries</span>
+                                </a>
+                            </li>
+
+                            <li class="">
+                                <a href="{{ url('assign-beneficiary') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Assign Beneficiary</span>
+                                </a>
+                            </li>
+
+                            <li class="">
+                                <a href="{{ url('import-beneficiary') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Import Beneficiary</span>
+                                </a>
+                            </li>
+
+                            <li class="">
+                                <a href="{{ url('all-employee-beneficiaries') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Employee Beneficiaries</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li class="pcoded-hasmenu">
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="fa fa-th-large"></i></span>
+                            <span class="pcoded-mtext">Departments</span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="">
+                                <a href="{{ url('departments/create') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Add New</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="{{ url('assign-manager') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Assign Manager</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="{{ url('departments') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Manage Departments</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="{{ url('get-department-import') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Import Departments</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="pcoded-hasmenu">
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="fa fa-user"></i></span>
+                            <span class="pcoded-mtext">Employee Types</span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="">
+                                <a href="{{ url('usertypes/create') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Add New</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="{{ url('usertypes') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Manage Employees</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 @endrole
