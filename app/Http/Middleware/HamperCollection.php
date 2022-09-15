@@ -22,7 +22,7 @@ class HamperCollection
         $user = Auth::user();
         $currentRoute = Route::currentRouteName();
 
-        if($user->hasRole('admin') || $user->hasRole('manager') || $user->hasRole('hamperissuer')){
+        if($user->hasRole('admin') || $user->hasRole('manager') || $user->hasRole('hamperissuer') || $user->hasRole('datacapturer')){
             return $next($request);
         } else {
             Log::info('UnAuthorized user attempted to visit '.$currentRoute.'. ', [$user]);

@@ -508,21 +508,20 @@
                         </a>
                     </li>
 
-                    <div class="pcoded-navigation-label">Allocations</div>
+                    <div class="pcoded-navigation-label">My Allocations</div>
 
-                    <li class="pcoded-hasmenu">
-                        <a href="javascript:void(0)" class="waves-effect waves-dark">
-                            <span class="pcoded-micon"><i class="fa fa-calendar"></i></span>
-                            <span class="pcoded-mtext">Allocations</span>
+                    <li class="">
+                        <a href="{{ url('my-user-allocation') }}" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="fa fa-file-excel-o"></i></span>
+                            <span class="pcoded-mtext">Food Allocations</span>
                         </a>
-                        <ul class="pcoded-submenu">
-                            <li class="">
-                                <a href="{{ url('my-user-allocation') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">My Allocations</span>
-                                </a>
-                            </li>
+                    </li>
 
-                        </ul>
+                    <li class="">
+                        <a href="{{ url('my-user-mallocation') }}" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="fa fa-file-excel-o"></i></span>
+                            <span class="pcoded-mtext">Meat Allocations</span>
+                        </a>
                     </li>
 
                     <div class="pcoded-navigation-label"> My Requests</div>
@@ -530,7 +529,7 @@
                     <li class="pcoded-hasmenu">
                         <a href="javascript:void(0)" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="fa fa-file-excel-o"></i></span>
-                            <span class="pcoded-mtext">Humber Requests</span>
+                            <span class="pcoded-mtext">Hamper Requests</span>
                         </a>
                         <ul class="pcoded-submenu">
                             <li class="">
@@ -610,21 +609,20 @@
                         </a>
                     </li>
 
-                    <div class="pcoded-navigation-label">Allocations</div>
+                    <div class="pcoded-navigation-label">My Allocations</div>
 
-                    <li class="pcoded-hasmenu">
-                        <a href="javascript:void(0)" class="waves-effect waves-dark">
-                            <span class="pcoded-micon"><i class="fa fa-calendar"></i></span>
-                            <span class="pcoded-mtext">Allocations</span>
+                    <li class="">
+                        <a href="{{ url('my-user-allocation') }}" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="fa fa-file-excel-o"></i></span>
+                            <span class="pcoded-mtext">Food Allocations</span>
                         </a>
-                        <ul class="pcoded-submenu">
-                            <li class="">
-                                <a href="{{ url('my-user-allocation') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">My Allocations</span>
-                                </a>
-                            </li>
+                    </li>
 
-                        </ul>
+                    <li class="">
+                        <a href="{{ url('my-user-mallocation') }}" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="fa fa-file-excel-o"></i></span>
+                            <span class="pcoded-mtext">Meat Allocations</span>
+                        </a>
                     </li>
 
                     <div class="pcoded-navigation-label"> My Requests</div>
@@ -632,7 +630,7 @@
                     <li class="pcoded-hasmenu">
                         <a href="javascript:void(0)" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="fa fa-file-excel-o"></i></span>
-                            <span class="pcoded-mtext">Humber Requests</span>
+                            <span class="pcoded-mtext">Hamper Requests</span>
                         </a>
                         <ul class="pcoded-submenu">
                             <li class="">
@@ -668,11 +666,6 @@
                                 </a>
                             </li>
                             <li class="">
-                                <a href="{{ url('/get-daily-approval') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Daily Schedule</span>
-                                </a>
-                            </li>
-                            <li class="">
                                 <a href="{{ url('approved-requests') }}" class="waves-effect waves-dark">
                                     <span class="pcoded-mtext">Approved Requests</span>
                                 </a>
@@ -682,9 +675,44 @@
                                     <span class="pcoded-mtext">Collected Requests</span>
                                 </a>
                             </li>
+                        </ul>
+                    </li>
+
+                    <div class="pcoded-navigation-label">Collection</div>
+
+                    <li class="pcoded-hasmenu">
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="fa fa-book"></i></span>
+                            <span class="pcoded-mtext">Food Collection</span>
+                        </a>
+                        <ul class="pcoded-submenu">
                             <li class="">
-                                <a href="{{ url('pending-requests') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Pending Requests</span>
+                                <a href="{{ url('fcollections/create') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Add New</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="{{ url('fcollections') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Collections</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="pcoded-hasmenu">
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="fa fa-skyatlas"></i></span>
+                            <span class="pcoded-mtext">Meat Collection</span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="">
+                                <a href="{{ url('mcollections/create') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Add New</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="{{ url('mcollections') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Collections</span>
                                 </a>
                             </li>
                         </ul>

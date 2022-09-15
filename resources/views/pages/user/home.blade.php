@@ -49,7 +49,7 @@
                                         <div class="col">
                                             <h6 class="m-b-5 text-white">Food Humber</h6>
                                             <h3 class="m-b-0 f-w-700 text-white">
-
+                                                {{ $f_count }}
                                             </h3>
                                         </div>
                                         <div class="col-auto">
@@ -62,14 +62,14 @@
                                     "></i>
                                         </div>
                                     </div>
-                                    {{-- <p class="m-b-0 text-white">
+                                    <p class="m-b-0 text-white">
 
                                         @if ($settings->food_available == 0)
                                             Not Available
                                         @else
                                             Available for Collection
                                         @endif
-                                    </p> --}}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -80,21 +80,21 @@
                                         <div class="col">
                                             <h6 class="m-b-5 text-white">Meat Humber</h6>
                                             <h3 class="m-b-0 f-w-700 text-white">
-
+                                                {{ $m_count }}
                                             </h3>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-database text-c-blue f-18"></i>
                                         </div>
                                     </div>
-                                    {{-- <p class="m-b-0 text-white">
+                                    <p class="m-b-0 text-white">
 
                                         @if ($settings->meat_available == 0)
                                             Not Available
                                         @else
                                             Available for Collection
                                         @endif
-                                    </p> --}}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -102,7 +102,8 @@
                         <div class="col-lg-12">
                             <div class="card">
                                 <div class="card-header" style="margin-bottom: 0;padding-bottom:0;">
-                                    <h4 style="font-size:16px;margin-bottom:0;font-weight: bold;">Recent Food Allocations</h4>
+                                    <h4 style="font-size:16px;margin-bottom:0;font-weight: bold;">Available Food Allocations
+                                    </h4>
                                 </div>
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
@@ -146,6 +147,64 @@
                                                             </td>
                                                         </tr>
                                                     @endforeach
+                                                @endif
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header" style="margin-bottom: 0;padding-bottom:0;">
+                                    <h4 style="font-size:16px;margin-bottom:0;font-weight: bold;">Available Meat Allocations
+                                    </h4>
+                                </div>
+                                <div class="card-block">
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="basic-btn" class="table table-bordered nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <th>Id</th>
+                                                    <th>Name</th>
+                                                    <th>Allocation</th>
+                                                    <th>Food Balance</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if ($meatallocations)
+                                                    @foreach ($meatallocations as $meatallocation)
+                                                        <tr>
+                                                            <td>{{ $meatallocation->id }}</td>
+                                                            <td>{{ $meatallocation->user->full_name }}</td>
+                                                            <td>{{ $meatallocation->meatallocation }}</td>
+                                                            <td>{{ $meatallocation->meat_allocation }}</td>
+                                                            <td>
+                                                                @if ($meatallocation->status == 'not collected')
+                                                                    @php
+                                                                        $badgeClass = 'success';
+                                                                    @endphp
+                                                                @elseif($meatallocation->status == 'partial')
+                                                                    @php
+                                                                        $badgeClass = 'warning';
+                                                                    @endphp
+                                                                @elseif($meatallocation->status == 'collected')
+                                                                    @php
+                                                                        $badgeClass = 'danger';
+                                                                    @endphp
+                                                                @else
+                                                                    @php $badgeClass = 'default' @endphp
+                                                                @endif
+                                                                <span
+                                                                    class="badge badge-{{ $badgeClass }}">{{ $meatallocation->status }}</span>
+
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                @else
+                                                    No Meat Allocation
                                                 @endif
                                             </tbody>
                                         </table>

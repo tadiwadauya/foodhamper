@@ -9,6 +9,7 @@ use App\Models\FoodCollection;
 use App\Models\FoodRequest;
 use App\Models\Jobcard;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -21,10 +22,27 @@ class FoodCollectionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // public function index()
+    // {
+    //     $collections = FoodCollection::latest()->get();
+    //     return view('food_collections.index', compact('collections'));
+    // }
+
     public function index()
     {
-        $collections = FoodCollection::latest()->get();
-        return view('food_collections.index', compact('collections'));
+       // $collections = FoodCollection::latest()->get();
+        //Nathi
+        $date = Carbon::today()->addMonths(-1);
+        $collections = FoodCollection::where('created_at', '>=', $date)
+                                ->get();
+         return view('food_collections.index',compact('collections'));
+    }
+
+    public function searchDateCollection(Request $request2)
+    {
+        $collections = FoodCollection::whereBetween('created_at',[$request2->From_date,$request2->To_date])
+                                ->get();
+         return view('food_collections.index',compact('collections'));
     }
 
     /**

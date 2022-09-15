@@ -8,6 +8,7 @@ use App\Models\MeatAllocation;
 use App\Models\Department;
 use App\Models\User;
 use App\Models\Usertype;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -16,9 +17,29 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class MeatAllocationsController extends Controller
 {
+    // public function index()
+    // {
+    //     $meatallocations = MeatAllocation::orderBy('created_at', 'desc')->get();
+    //     return view('meatallocations.index', compact('meatallocations'));
+    // }
+
     public function index()
     {
-        $meatallocations = MeatAllocation::orderBy('created_at', 'desc')->get();
+        // $allocations = Allocation::orderBy('created_at', 'desc')->get();
+
+
+        $date = Carbon::today()->addMonths(-1);
+        $meatallocations = MeatAllocation::where('created_at', '>=', $date)
+            ->get();
+        return view('meatallocations.index', compact('meatallocations'));
+    }
+
+    public function searchFoodAllocation(Request $request)
+    {
+
+        $meatallocations = MeatAllocation::whereBetween('created_at', [$request->From_date, $request->To_date])
+            ->get();
+
         return view('meatallocations.index', compact('meatallocations'));
     }
 

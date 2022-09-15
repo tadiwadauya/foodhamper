@@ -7,6 +7,7 @@ use App\Models\Allocation;
 use App\Models\Department;
 use App\Models\User;
 use App\Models\Usertype;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,10 +21,31 @@ class AllocationsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // public function index()
+    // {
+    //     $allocations = Allocation::orderBy('created_at', 'desc')->get();
+    //     return view('allocations.index', compact('allocations'));
+    // }
+
     public function index()
     {
-        $allocations = Allocation::orderBy('created_at', 'desc')->get();
-        return view('allocations.index', compact('allocations'));
+       // $allocations = Allocation::orderBy('created_at', 'desc')->get();
+
+
+         $date = Carbon::today()->addMonths(-1);
+         $allocations = Allocation::where('created_at', '>=', $date)
+                              ->get();
+         return view('allocations.index',compact('allocations'));
+    }
+
+    public function searchFoodAllocation(Request $request)
+    {
+
+        $allocations = Allocation::whereBetween('created_at',[$request->From_date,$request->To_date])
+                                ->get();
+
+        return view('allocations.index',compact('allocations'));
+
     }
 
     /**

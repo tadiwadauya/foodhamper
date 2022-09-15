@@ -9,6 +9,7 @@ use App\Models\HumberSetting;
 use App\Models\Jobcard;
 use App\Models\User;
 use App\Notifications\FoodRequestNotification;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -22,9 +23,27 @@ class FoodRequestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // public function index()
+    // {
+    //     $frequests = FoodRequest::all();
+
+    //     return view('frequests.index', compact('frequests'));
+    // }
+
     public function index()
     {
-        $frequests = FoodRequest::all();
+        //Display last 60 Days record: Author: Nathi
+        $date = Carbon::today()->addMonths(-1);
+        $frequests = FoodRequest::where('created_at', '>=', $date)
+            ->get();
+
+        return view('frequests.index', compact('frequests'));
+    }
+    //Search between date: Author:Nathi
+    public function searchDate(Request $request)
+    {
+        $frequests = FoodRequest::whereBetween('created_at', [$request->From_date, $request->To_date])
+            ->get();
 
         return view('frequests.index', compact('frequests'));
     }

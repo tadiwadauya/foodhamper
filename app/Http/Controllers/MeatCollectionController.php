@@ -9,6 +9,7 @@ use App\Models\Jobcard;
 use App\Models\MeatAllocation;
 use App\Models\MeatCollection;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -22,9 +23,26 @@ class MeatCollectionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // public function index()
+    // {
+    //     $collections = MeatCollection::latest()->get();
+    //     return view('mcollections.index', compact('collections'));
+    // }
+
     public function index()
     {
-        $collections = MeatCollection::latest()->get();
+        // $collections = FoodCollection::latest()->get();
+        //Nathi
+        $date = Carbon::today()->addMonths(-1);
+        $collections = MeatCollection::where('created_at', '>=', $date)
+            ->get();
+        return view('mcollections.index', compact('collections'));
+    }
+
+    public function searchDateCollection(Request $request2)
+    {
+        $collections = MeatCollection::whereBetween('created_at', [$request2->From_date, $request2->To_date])
+            ->get();
         return view('mcollections.index', compact('collections'));
     }
 

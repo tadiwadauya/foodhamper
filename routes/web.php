@@ -118,6 +118,7 @@ Route::group(['middleware' => ['auth', 'activated', 'web', 'activity', 'managera
 
     // allocations
     Route::resource('allocations', 'App\Http\Controllers\AllocationsController');
+    Route::post('/SearchFoodAllocation','App\Http\Controllers\AllocationsController@searchFoodAllocation')->name("searchAllocation");
     Route::get('import-allocation', 'App\Http\Controllers\AllocationsController@allocationImportForm');
     Route::post('allocation-import-send', 'App\Http\Controllers\AllocationsController@allocationImportSend');
     Route::get('all-alloctions', 'App\Http\Controllers\AllocationsController@allAllocations');
@@ -188,6 +189,7 @@ Route::group(['middleware' => ['auth', 'activated', 'web', 'activity']], functio
 
     // food collection
     Route::resource('fcollections', 'App\Http\Controllers\FoodCollectionController')->middleware('hampercollection');
+    Route::post('/SearchFoodCollection-BetweenDate','App\Http\Controllers\FoodCollectionController@searchDateCollection')->name("searchCollection");
     Route::get('get-food-request/{id}', 'App\Http\Controllers\FoodCollectionController@getFoodRequest');
     Route::get('getfrequestallocation/{id}', 'App\Http\Controllers\FoodCollectionController@getFoodRequestAllocation');
     Route::get('getuserbeneficiaries/{id}', 'App\Http\Controllers\FoodCollectionController@getUserBeneficiaries');
@@ -196,6 +198,7 @@ Route::group(['middleware' => ['auth', 'activated', 'web', 'activity']], functio
 
     // meat collection
     Route::resource('mcollections', 'App\Http\Controllers\MeatCollectionController')->middleware('hampercollection');
+    Route::post('/SearchMeatCollection-BetweenDate','App\Http\Controllers\MeatCollectionController@searchMeatDate')->name("meatCollection");
     Route::get('get-meat-request/{id}', 'App\Http\Controllers\MeatCollectionController@getMeatRequest');
     Route::get('getmrequestallocation/{id}', 'App\Http\Controllers\MeatCollectionController@getMeatRequestAllocation');
     Route::get('getbeneficiary/{id}', 'App\Http\Controllers\MeatCollectionController@getUserBeneficiaries');
@@ -219,6 +222,7 @@ Route::group(['middleware' => ['auth', 'activated', 'web', 'activity']], functio
 
     // food request
     Route::resource('frequests', 'App\Http\Controllers\FoodRequestController');
+    Route::post('SearchBetweenDate','App\Http\Controllers\FoodRequestController@searchDate');
     Route::get('/getusername/{paynumber}', 'App\Http\Controllers\FoodRequestController@getUsername');
     Route::get('/approve-request/{id}', 'App\Http\Controllers\FoodRequestController@approveRequest')->middleware('manageradmin');
     Route::get('/reject-request/{id}', 'App\Http\Controllers\FoodRequestController@rejectRequest')->middleware('manageradmin');
@@ -228,6 +232,7 @@ Route::group(['middleware' => ['auth', 'activated', 'web', 'activity']], functio
 
     // meat request
     Route::resource('mrequests', 'App\Http\Controllers\MeatRequestController');
+    Route::post('SearchBetweenDate','App\Http\Controllers\MeatRequestController@searchDate');
     Route::get('/getusername/meat/{paynumber}', 'App\Http\Controllers\MeatRequestController@getUsername');
     Route::get('/approve-meat-request/{id}', 'App\Http\Controllers\MeatRequestController@approveRequest')->middleware('manageradmin');
     Route::get('/reject-meat-request/{id}', 'App\Http\Controllers\MeatRequestController@rejectRequest')->middleware('manageradmin');

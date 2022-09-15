@@ -64,32 +64,36 @@ public function index()
         {
             $user = Auth::user();
             $meatallocations = MeatAllocation::where('paynumber', $user->paynumber)->latest()->get();
-            $allocations = Allocation::where('paynumber', $user->paynumber)->latest()->get();
-            // $settings = HumberSetting::where('id',1)->first();
+            $allocations = Allocation::where([['paynumber', $user->paynumber], ['status','not collected']])->latest()->get();
+            $f_count = Allocation::where([['paynumber', $user->paynumber], ['status','not collected']])->count();
+            $m_count = MeatAllocation::where([['paynumber', $user->paynumber], ['status','not collected']])->count();
+            $settings = HumberSetting::where('id',1)->first();
 
-            return view('pages.user.home',compact('meatallocations','allocations'));
+            return view('pages.user.home',compact('meatallocations','allocations','settings', 'f_count', 'm_count'));
         }
 
         if ($user->hasRole('hamperissuer'))
         {
-            $food_count = $user->fcount;
-            $meat_count = $user->mcount;
+            $user = Auth::user();
+            $meatallocations = MeatAllocation::where('paynumber', $user->paynumber)->latest()->get();
+            $allocations = Allocation::where([['paynumber', $user->paynumber], ['status','not collected']])->latest()->get();
+            $f_count = Allocation::where([['paynumber', $user->paynumber], ['status','not collected']])->count();
+            $m_count = MeatAllocation::where([['paynumber', $user->paynumber], ['status','not collected']])->count();
             $settings = HumberSetting::where('id',1)->first();
 
-            $fcollections = FoodCollection::where('paynumber',$user->paynumber)->get();
-
-            return view('pages.user.home',compact('settings','fcollections','food_count','meat_count'));
+            return view('pages.datacapture.home',compact('meatallocations','allocations','settings', 'f_count', 'm_count'));
         }
 
         if ($user->hasRole('datacapturer'))
         {
-            $food_count = $user->fcount;
-            $meat_count = $user->mcount;
+            $user = Auth::user();
+            $meatallocations = MeatAllocation::where('paynumber', $user->paynumber)->latest()->get();
+            $allocations = Allocation::where([['paynumber', $user->paynumber], ['status','not collected']])->latest()->get();
+            $f_count = Allocation::where([['paynumber', $user->paynumber], ['status','not collected']])->count();
+            $m_count = MeatAllocation::where([['paynumber', $user->paynumber], ['status','not collected']])->count();
             $settings = HumberSetting::where('id',1)->first();
 
-            $fcollections = FoodCollection::where('paynumber',$user->paynumber)->get();
-
-            return view('pages.user.home',compact('settings','fcollections','food_count','meat_count'));
+            return view('pages.datacapture.home',compact('meatallocations','allocations','settings', 'f_count', 'm_count'));
         }
 
     }

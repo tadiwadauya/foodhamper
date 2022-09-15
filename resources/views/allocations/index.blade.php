@@ -51,6 +51,39 @@
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
                                         <table id="basic-btn" class="table table-bordered nowrap">
+                                            <div class="card-body">
+                                                <form action="{{ route('searchAllocation') }}" method="POST">
+                                                    {{ csrf_field() }}
+                                                    <div class="row">
+
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label>From Date</label>
+                                                                <input Type="date" name="From_date" class="form-control">
+                                                            </div>
+                                                        </div>
+
+
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <label>To Date</label>
+                                                                <input Type="date" name="To_date" class="form-control">
+                                                            </div>
+
+                                                        </div>
+
+
+                                                        <div class="col-md-4">
+                                                            <div class="form-group">
+                                                                <br>
+                                                                <button type="submit"
+                                                                    class="btn btn-primary">Search</button>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
                                             <thead>
                                                 <tr>
                                                     <th>Id</th>

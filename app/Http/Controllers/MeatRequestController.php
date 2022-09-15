@@ -8,6 +8,7 @@ use App\Models\HumberSetting;
 use App\Models\Jobcard;
 use App\Models\MeatRequest;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -21,9 +22,28 @@ class MeatRequestController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // public function index()
+    // {
+    //     $mrequests = MeatRequest::all();
+
+    //     return view('mrequests.index', compact('mrequests'));
+    // }
+
     public function index()
     {
-        $mrequests = MeatRequest::all();
+        //Display last 60 Days record: Author: Nathi
+        $date = Carbon::today()->addMonths(-1);
+        $mrequests = MeatRequest::where('created_at', '>=', $date)
+            ->get();
+
+        return view('mrequests.index', compact('mrequests'));
+    }
+    //Search between date: Author:Nathi
+    public function searchDate(Request $request)
+    {
+
+        $mrequests = MeatRequest::whereBetween('created_at', [$request->From_date, $request->To_date])
+            ->get();
 
         return view('mrequests.index', compact('mrequests'));
     }
