@@ -37,7 +37,7 @@ Route::group(['middleware' => ['web', 'activity']], function () {
 Route::group(['middleware' => ['web', 'activity', 'activated', 'auth']], function () {
 
     // job titles
-    Route::resource('jobtitles', 'App\Http\Controllers\JobtitlesController');
+    // Route::resource('jobtitles', 'App\Http\Controllers\JobtitlesController');
 
     // usertypes
     Route::resource('usertypes', 'App\Http\Controllers\UsertypesController');

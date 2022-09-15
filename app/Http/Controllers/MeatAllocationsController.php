@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Imports\AllocationsImport;
+use App\Imports\MeatAllocationsImport;
 use App\Models\MeatAllocation;
 use App\Models\Department;
 use App\Models\User;
@@ -249,7 +250,7 @@ class MeatAllocationsController extends Controller
             return back()->withErrors($validator)->withInput();
         }
 
-        Excel::import(new AllocationsImport, request()->file('meatallocation'));
+        Excel::import(new MeatAllocationsImport, request()->file('meatallocation'));
 
         return redirect('meatallocations')->with('Data has been imported successfully');
     }
