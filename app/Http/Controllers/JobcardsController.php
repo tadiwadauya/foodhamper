@@ -103,6 +103,7 @@ class JobcardsController extends Controller
      */
     public function show(Jobcard $jobcard)
     {
+        return 'sex';
     }
 
     /**
