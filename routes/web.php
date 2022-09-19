@@ -141,7 +141,7 @@ Route::group(['middleware' => ['auth', 'activated', 'web', 'activity', 'managera
     Route::get('/meatallocation-download', 'App\Http\Controllers\MeatAllocationsController@downloadAllocationForm');
 });
 
-Route::group(['middleware' => ['auth', 'activated', 'web', 'activity', 'manageradmin']], function () {
+Route::group(['middleware' => ['auth', 'activated', 'web', 'activity']], function () {
 
     // jobcards
     Route::resource('jobcards', 'App\Http\Controllers\JobcardsController');
