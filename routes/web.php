@@ -207,7 +207,7 @@ Route::group(['middleware' => ['auth', 'activated', 'web', 'activity']], functio
     Route::get('/gettype/{id}', 'App\Http\Controllers\MeatCollectionController@getMeatType');
 });
 
-Route::group(['middleware' => ['auth', 'activated', 'web', 'activity', 'manageradmin']], function () {
+Route::group(['middleware' => ['auth', 'activated', 'web', 'activity']], function () {
 
     // Reports
     Route::get('user-collection-report', 'App\Http\Controllers\ReportsController@getUserCollection');

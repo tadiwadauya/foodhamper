@@ -47,19 +47,13 @@
                                 <div class="card-body">
                                     <div class="row align-items-center m-b-30">
                                         <div class="col">
-                                            <h6 class="m-b-5 text-white">Food Humbers</h6>
+                                            <h6 class="m-b-5 text-white">Food Hampers</h6>
                                             <h3 class="m-b-0 f-w-700 text-white">
                                                 {{ $food_count }}
                                             </h3>
                                         </div>
                                         <div class="col-auto">
-                                            <i
-                                                class="
-                                      fas
-                                      fa-database
-                                      text-c-red
-                                      f-18
-                                    "></i>
+                                            <i class="fas fa-database text-c-red f-18"></i>
                                         </div>
                                     </div>
                                     <p class="m-b-0 text-white">
@@ -78,7 +72,7 @@
                                 <div class="card-body">
                                     <div class="row align-items-center m-b-30">
                                         <div class="col">
-                                            <h6 class="m-b-5 text-white">Meat Humbers</h6>
+                                            <h6 class="m-b-5 text-white">Meat Hampers</h6>
                                             <h3 class="m-b-0 f-w-700 text-white">
                                                 {{ $meat_count }}
                                             </h3>

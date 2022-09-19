@@ -597,6 +597,28 @@
                             </li>
                         </ul>
                     </li>
+
+                    <div class="pcoded-navigation-label">Reports</div>
+
+                    <li class="pcoded-hasmenu">
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="fa fa-line-chart"></i></span>
+                            <span class="pcoded-mtext">Reports</span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="">
+                                <a href="{{ url('get-month-report') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Monthly</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="{{ url('user-collection-report') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">User Collection</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
                 @endrole
 
                 @role('datacapturer')
@@ -715,6 +737,28 @@
                                     <span class="pcoded-mtext">Collections</span>
                                 </a>
                             </li>
+                        </ul>
+                    </li>
+
+                    <div class="pcoded-navigation-label">Reports</div>
+
+                    <li class="pcoded-hasmenu">
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="fa fa-line-chart"></i></span>
+                            <span class="pcoded-mtext">Reports</span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="">
+                                <a href="{{ url('get-month-report') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Monthly</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="{{ url('user-collection-report') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">User Collection</span>
+                                </a>
+                            </li>
+
                         </ul>
                     </li>
                 @endrole
