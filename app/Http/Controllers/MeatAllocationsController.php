@@ -68,7 +68,7 @@ class MeatAllocationsController extends Controller
             'paynumber' => 'required',
             'meat_a' => 'required',
             'meat_b' => 'required',
-            'meatallocation' => 'required, unique:meat_allocations',
+            'meatallocation' => 'required',
         ]);
 
         if ($validator->fails()) {
