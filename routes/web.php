@@ -128,7 +128,7 @@ Route::group(['middleware' => ['auth', 'activated', 'web', 'activity', 'managera
     Route::get('/allocation-download', 'App\Http\Controllers\AllocationsController@downloadAllocationForm');
 });
 
-Route::group(['middleware' => ['auth', 'activated', 'web', 'activity', 'manageradmin']], function () {
+Route::group(['middleware' => ['auth', 'activated', 'web', 'activity']], function () {
 
     // allocations
     Route::resource('meatallocations', 'App\Http\Controllers\MeatAllocationsController');

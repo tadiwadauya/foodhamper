@@ -700,6 +700,37 @@
                         </ul>
                     </li>
 
+                    <div class="pcoded-navigation-label">Meat Requests</div>
+
+                    <li class="pcoded-hasmenu">
+                        <a href="javascript:void(0)" class="waves-effect waves-dark">
+                            <span class="pcoded-micon"><i class="fa fa-file-excel-o"></i></span>
+                            <span class="pcoded-mtext">Requests</span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class="">
+                                <a href="{{ url('mrequests/create') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Create New</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="{{ url('mrequests') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">All Requests</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="{{ url('approved-meat-requests') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Approved Requests</span>
+                                </a>
+                            </li>
+                            <li class="">
+                                <a href="{{ url('collected-meat-requests') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Collected Requests</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
                     <div class="pcoded-navigation-label">Collection</div>
 
                     <li class="pcoded-hasmenu">
